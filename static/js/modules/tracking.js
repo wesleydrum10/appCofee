@@ -5,7 +5,8 @@ if (root) {
   const feedback = root.querySelector('[data-tracking-feedback]');
   let timer;
   let loading = false;
-  const terminal = () => content.querySelector('[data-terminal]')?.dataset.terminal === 'true';
+  let unavailable = false;
+  const terminal = () => unavailable || content.querySelector('[data-terminal]')?.dataset.terminal === 'true';
   const schedule = () => {
     clearTimeout(timer);
     if (!terminal()) timer = setTimeout(refresh, 15000);
@@ -20,6 +21,13 @@ if (root) {
         credentials: 'same-origin', cache: 'no-store', signal: AbortSignal.timeout(10000),
         headers: { Accept: 'application/json' },
       });
+      if (response.status === 403) {
+        unavailable = true;
+        content.replaceChildren();
+        button.hidden = true;
+        feedback.textContent = 'O rastreamento ficará disponível após a aprovação do pagamento. Volte aos detalhes do pedido para consultar o pagamento.';
+        return;
+      }
       if (!response.ok || response.redirected || !response.headers.get('content-type')?.includes('application/json')) {
         throw new Error('Não foi possível consultar a entrega. Verifique sua conexão e se continua conectado à conta.');
       }

@@ -15,7 +15,7 @@
         <p class="mt-2 text-sm text-dust">R$ {{ order.total }} · {{ order.created_at|date:"d/m/Y H:i" }}</p>
         {% if order.payment %}<p class="mt-2 text-sm text-dust">Pagamento: {% include "components/status_badge.html" with status=order.payment.get_status_display status_code=order.payment.status only %}</p>{% endif %}
       </a>
-      <a class="brand-button" href="{% url 'orders:tracking' order.number %}">Rastrear entrega · {{ order.number }}</a>
+      {% if order.can_track_delivery %}<a class="brand-button" href="{% url 'orders:tracking' order.number %}">Rastrear entrega · {{ order.number }}</a>{% endif %}
     {% empty %}
       {% include "components/empty_state.html" with title="Você ainda não fez nenhum pedido." description="A vitrine está pronta quando bater a vontade." %}
     {% endfor %}

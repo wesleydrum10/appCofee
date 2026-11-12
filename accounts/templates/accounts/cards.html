@@ -1,0 +1,25 @@
+{% extends "layouts/storefront.html" %}
+{% load static %}
+{% block title %}Meus cartões | Veludo &amp; Grão{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/cards.css' %}">{% endblock %}
+{% block content %}
+<section class="cards-page">
+  <a class="cards-back" href="{% if from_checkout %}{% url 'orders:checkout' %}{% else %}{% url 'accounts:profile' %}{% endif %}">← {% if from_checkout %}Voltar ao checkout{% else %}Minha conta{% endif %}</a>
+  <header><p class="cards-eyebrow">Formas de pagamento</p><h1 class="brand-heading">Meus cartões</h1><p>Seus cartões prontos para o próximo café.</p></header>
+  <aside class="cards-notice"><span class="material-symbols-outlined" aria-hidden="true">info</span><p><strong>Ambiente de demonstração.</strong> Cadastre apenas os cartões de teste indicados abaixo. Nenhuma cobrança real é realizada.</p></aside>
+  <div class="cards-list" aria-label="Cartões cadastrados">
+  {% for card in cards %}<article class="saved-card" id="card-{{ card.pk }}" aria-label="{{ card.display_name }}">
+    <div class="saved-card-top"><span class="material-symbols-outlined" aria-hidden="true">credit_card</span><strong>{{ card.brand }}</strong>{% if card.is_expired %}<span class="card-tag">Vencido</span>{% elif card.is_default %}<span class="card-tag">Padrão</span>{% endif %}</div>
+    <p class="saved-card-number">•••• •••• •••• {{ card.last_four }}</p><div class="saved-card-info"><strong>{{ card.holder_name }}</strong><span>Validade {{ card.expiry_month|stringformat:'02d' }}/{{ card.expiry_year }}</span></div>
+    <div class="saved-card-actions">{% if not card.is_default and not card.is_expired %}<form method="post" action="{% url 'accounts:card_default' card.pk %}">{% csrf_token %}<button type="submit">Definir como padrão</button></form>{% endif %}<form method="post" action="{% url 'accounts:card_delete' card.pk %}">{% csrf_token %}<button type="submit" aria-label="Remover {{ card.display_name }}">Remover</button></form></div>
+  </article>{% empty %}<div class="cards-empty"><span class="material-symbols-outlined" aria-hidden="true">add_card</span><h2>Nenhum cartão cadastrado</h2><p>Adicione um cartão de teste para selecioná-lo na finalização do pedido.</p></div>{% endfor %}
+  </div>
+  <form method="post" action="{% url 'accounts:cards' %}{% if from_checkout %}?checkout=1{% endif %}" class="card-form" id="new-card">
+    {% csrf_token %}<h2>Cadastrar cartão</h2>{{ form.non_field_errors }}
+    {% for field in form %}<div class="card-field {% if field.name == 'is_default' %}card-checkbox{% endif %}">{% if field.name == 'is_default' %}{{ field }}{{ field.label_tag }}{% else %}{{ field.label_tag }}{{ field }}{% endif %}{% if field.help_text %}<p id="{{ field.auto_id }}_helptext" class="card-help">{{ field.help_text }}</p>{% endif %}{{ field.errors }}</div>{% endfor %}
+    <p class="card-help">Não solicitamos CVV. Apenas o nome, a bandeira, o final e a validade ficam salvos.</p>
+    <button type="submit" class="brand-button" data-action-state data-pending-label="Cadastrando cartão...">Cadastrar cartão</button>
+  </form>
+</section>
+{% endblock %}
+{% block extra_js %}<script type="module" src="{% static 'js/modules/cards.js' %}"></script>{% endblock %}

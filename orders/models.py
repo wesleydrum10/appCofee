@@ -50,6 +50,15 @@ class Order(models.Model):
     def __str__(self):
         return self.number
 
+    @property
+    def can_track_delivery(self):
+        from payments.models import Payment
+
+        payment = getattr(self, "payment", None)
+        return bool(payment and (
+            payment.method != Payment.Method.CARD or payment.status == Payment.Status.APPROVED
+        ))
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")

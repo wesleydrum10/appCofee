@@ -1,4 +1,6 @@
-<article class="group flex flex-col overflow-hidden rounded-2xl border border-latte bg-white shadow-warm transition hover:-translate-y-0.5 hover:shadow-float">
+{% load cart_tags %}
+{% with cart_quantity=cart_product_quantities|product_quantity:product.pk %}
+<article data-cart-product="{{ product.pk }}" data-in-cart="{{ cart_quantity|yesno:'true,false' }}" class="product-card group flex flex-col overflow-hidden rounded-2xl border border-latte bg-white shadow-warm transition hover:-translate-y-0.5 hover:shadow-float">
   <a href="{{ product.get_absolute_url }}" class="block">
     <div class="relative aspect-square overflow-hidden bg-butter">
       {% if product.image %}
@@ -19,11 +21,15 @@
       {% endif %}
     </div>
   </a>
-  <form method="post" action="{% url 'cart:add' product.id %}" class="px-3 pb-3">
+  <form method="post" action="{% url 'cart:add' product.id %}" data-cart-add data-cart-summary-url="{% url 'cart:summary' %}" class="px-3 pb-3 mt-auto">
     {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+    <p class="cart-product-state" data-product-cart-state {% if not cart_quantity %}hidden{% endif %} aria-live="polite">No carrinho: <strong data-product-cart-quantity>{{ cart_quantity }}</strong> <span data-product-cart-unit>{{ cart_quantity|pluralize:'unidade,unidades' }}</span></p>
     <button class="brand-button w-full gap-1 text-sm" data-action-state data-idle-label="Pedir" data-pending-label="Adicionando..." data-success-label="Adicionado">
-      <span class="material-symbols-outlined text-[18px]">add</span>
+      <span class="material-symbols-outlined text-[18px]" aria-hidden="true">add</span>
       Pedir
     </button>
+    <p class="product-cart-feedback" data-product-cart-feedback role="status" hidden></p>
   </form>
 </article>
+{% endwith %}

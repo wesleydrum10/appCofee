@@ -1,7 +1,7 @@
 from datetime import timedelta
 from decimal import Decimal
 
-from django.test import TestCase
+from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils import timezone
 
@@ -68,3 +68,57 @@ class CartQuantityTests(TestCase):
         self.assertEqual(self.update({"delta": "1"}).status_code, 404)
         self.item.refresh_from_db()
         self.assertEqual(self.item.quantity, 2)
+
+    def test_add_json_counts_repeated_products_and_keeps_stock_validation(self):
+        url = reverse("cart:add", args=[self.product.pk])
+        response = self.client.post(url, {"quantity": 2}, HTTP_ACCEPT="application/json")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["count"], 4)
+        self.assertEqual(response.json()["product_quantities"], {str(self.product.pk): 4})
+        response = self.client.post(url, {"quantity": 2}, HTTP_ACCEPT="application/json")
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(response.json()["ok"])
+        self.assertEqual(CartService.item_count(self.cart), 4)
+
+    def test_summary_groups_customized_items_and_is_private(self):
+        addon = Addon.objects.create(name="Calda", kind=Addon.Kind.EXTRA, price=2)
+        ProductAddon.objects.create(product=self.product, addon=addon)
+        CartService.add_product(self.cart, self.product, 1, [addon.pk])
+        response = self.client.get(reverse("cart:summary"))
+        self.assertEqual(response.json(), {"count": 3, "product_quantities": {str(self.product.pk): 3}})
+        self.assertIn("no-store", response.headers["Cache-Control"])
+        guest = Client()
+        self.assertEqual(guest.get(reverse("cart:summary")).json(), {"count": 0, "product_quantities": {}})
+        other = User.objects.create_user("summary-other@test.com")
+        self.client.force_login(other)
+        self.assertEqual(self.client.get(reverse("cart:summary")).json()["count"], 0)
+
+    def test_cards_show_saved_quantity_on_home_catalog_and_product_detail(self):
+        for url in [reverse("core:home"), reverse("catalog:product_list"), self.product.get_absolute_url()]:
+            response = self.client.get(url)
+            self.assertContains(response, 'data-product-cart-quantity>2</strong>')
+            self.assertContains(response, "data-cart-add")
+            self.assertEqual(response.context["cart_product_quantities"], {self.product.pk: 2})
+        CartService.update_quantity(self.item, 0)
+        response = self.client.get(reverse("catalog:product_list"))
+        self.assertNotContains(response, 'data-in-cart="true"')
+
+    def test_html_add_returns_to_origin_instead_of_cart_and_rejects_external_redirect(self):
+        url = reverse("cart:add", args=[self.product.pk])
+        origin = reverse("catalog:product_list") + "?q=Café"
+        response = self.client.post(url, {"next": origin})
+        self.assertRedirects(response, origin)
+        response = self.client.post(url, {"next": "https://example.com/"})
+        self.assertRedirects(response, reverse("catalog:product_list"))
+
+    def test_anonymous_addition_persists_with_session_and_updates_second_product(self):
+        guest = Client()
+        url = reverse("cart:add", args=[self.product.pk])
+        response = guest.post(url, {}, HTTP_ACCEPT="application/json")
+        self.assertEqual(response.json()["count"], 1)
+        second = Product.objects.create(category=self.product.category, name="Cookie", price=9)
+        response = guest.post(reverse("cart:add", args=[second.pk]), {"quantity": 2}, HTTP_ACCEPT="application/json")
+        self.assertEqual(response.json()["count"], 3)
+        self.assertEqual(response.json()["product_quantities"], {str(self.product.pk): 1, str(second.pk): 2})
+        self.assertEqual(guest.get(reverse("cart:summary")).json()["count"], 3)
+        self.assertEqual(CartService.item_count(self.cart), 2)

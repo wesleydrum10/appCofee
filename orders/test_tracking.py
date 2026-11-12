@@ -24,9 +24,50 @@ class DeliveryTrackingTests(TestCase):
             "street": "Rua Privada", "number": "123", "district": "Centro", "city": "São Paulo", "state": "SP",
         })
         OrderStatusHistory.objects.create(order=self.order, status=self.order.status, note="Pedido criado.")
+        self.payment = Payment.objects.create(order=self.order, method=Payment.Method.CASH, amount=self.order.total)
         self.url = reverse("orders:tracking", args=[self.order.number])
         self.api = reverse("orders:tracking_status", args=[self.order.number])
         self.manage = reverse("reports:order_delivery", args=[self.order.number])
+
+    def test_card_tracking_is_hidden_and_blocked_until_payment_approved(self):
+        self.client.force_login(self.customer)
+        for status in [Payment.Status.PENDING, Payment.Status.DECLINED, Payment.Status.REFUNDED]:
+            with self.subTest(status=status):
+                Payment.objects.filter(pk=self.payment.pk).update(method=Payment.Method.CARD, status=status)
+                # An advanced order status must not bypass the payment requirement.
+                Order.objects.filter(pk=self.order.pk).update(status=Order.Status.CONFIRMED)
+                self.assertNotContains(self.client.get(reverse("orders:detail", args=[self.order.number])), self.url)
+                self.assertNotContains(self.client.get(reverse("orders:list")), self.url)
+                self.assertEqual(self.client.get(self.url).status_code, 403)
+                response = self.client.get(self.api)
+                self.assertEqual(response.status_code, 403)
+                self.assertNotIn("html", response.json())
+                self.assertIn("no-store", response.headers["Cache-Control"])
+        Payment.objects.filter(pk=self.payment.pk).update(status=Payment.Status.APPROVED)
+        self.assertContains(self.client.get(reverse("orders:detail", args=[self.order.number])), self.url)
+        self.assertContains(self.client.get(reverse("orders:list")), self.url)
+        self.assertEqual(self.client.get(self.url).status_code, 200)
+        self.assertEqual(self.client.get(self.api).status_code, 200)
+        Payment.objects.filter(pk=self.payment.pk).update(status=Payment.Status.REFUNDED)
+        self.assertEqual(self.client.get(self.api).status_code, 403)
+
+    def test_pix_and_cash_tracking_remain_available_without_approval(self):
+        self.client.force_login(self.customer)
+        for method in [Payment.Method.PIX, Payment.Method.CASH]:
+            with self.subTest(method=method):
+                Payment.objects.filter(pk=self.payment.pk).update(method=method, status=Payment.Status.PENDING)
+                self.assertContains(self.client.get(reverse("orders:detail", args=[self.order.number])), self.url)
+                self.assertContains(self.client.get(reverse("orders:list")), self.url)
+                self.assertEqual(self.client.get(self.url).status_code, 200)
+                self.assertEqual(self.client.get(self.api).status_code, 200)
+
+    def test_missing_payment_does_not_expose_tracking(self):
+        self.payment.delete()
+        self.client.force_login(self.customer)
+        self.assertNotContains(self.client.get(reverse("orders:detail", args=[self.order.number])), self.url)
+        self.assertNotContains(self.client.get(reverse("orders:list")), self.url)
+        self.assertEqual(self.client.get(self.url).status_code, 403)
+        self.assertEqual(self.client.get(self.api).status_code, 403)
 
     def test_tracking_requires_login_and_only_owner_can_read(self):
         for url in [self.url, self.api]:

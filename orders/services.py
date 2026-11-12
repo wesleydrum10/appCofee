@@ -35,11 +35,21 @@ class DeliveryProvider:
 class OrderService:
     @staticmethod
     @transaction.atomic
-    def create_order(cart, user, address, payment_method: str) -> Order:
+    def create_order(cart, user, address, payment_method: str, saved_card_id=None) -> Order:
         if not user.is_authenticated:
             raise PermissionError("Faça login para finalizar o pedido.")
         if payment_method not in Payment.Method.values:
             raise ValueError("Escolha uma forma de pagamento válida.")
+        card = None
+        if payment_method == Payment.Method.CARD:
+            try:
+                card_id = int(saved_card_id)
+                if 0 < card_id <= 9223372036854775807:
+                    card = user.saved_cards.select_for_update().usable().filter(pk=card_id).first()
+            except (TypeError, ValueError, OverflowError):
+                card = None
+            if card is None:
+                raise ValueError("Cadastre e selecione um cartão válido para continuar.")
         cart = Cart.objects.select_for_update().get(pk=cart.pk)
         cart_items = list(cart.items.select_related("product").prefetch_related("addons__addon"))
         if not cart_items:
@@ -104,7 +114,10 @@ class OrderService:
         OrderStatusHistory.objects.create(order=order, status=order.status, user=user, note="Pedido criado.")
         if order.coupon:
             CouponUsage.objects.create(coupon=order.coupon, user=user, order=order, discount_amount=discount)
-        Payment.objects.create(order=order, method=payment_method, amount=order.total)
+        Payment.objects.create(
+            order=order, method=payment_method, amount=order.total,
+            card_token=card.token if card else "", card_display=card.display_name if card else "",
+        )
         cart.items.all().delete()
         cart.coupon = None
         cart.save(update_fields=["coupon", "updated_at"])

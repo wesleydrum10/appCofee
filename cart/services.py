@@ -31,6 +31,11 @@ class CartService:
         return sum(cart.items.values_list("quantity", flat=True))
 
     @staticmethod
+    def summary(cart: Cart) -> dict:
+        quantities = dict(cart.items.values("product_id").annotate(total=Sum("quantity")).values_list("product_id", "total"))
+        return {"count": sum(quantities.values()), "product_quantities": quantities}
+
+    @staticmethod
     @transaction.atomic
     def add_product(cart: Cart, product: Product, quantity: int = 1, addon_ids=None) -> CartItem:
         addon_ids = addon_ids or []

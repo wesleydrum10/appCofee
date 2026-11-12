@@ -1,7 +1,9 @@
 {% extends "layouts/storefront.html" %}
+{% load cart_tags %}
 {% block title %}{{ product.name }} | Café & Cupcakes{% endblock %}
 {% block content %}
-<article class="space-y-5 md:grid md:grid-cols-2 md:gap-8 md:space-y-0">
+{% with cart_quantity=cart_product_quantities|product_quantity:product.pk %}
+<article data-cart-product="{{ product.pk }}" class="space-y-5 md:grid md:grid-cols-2 md:gap-8 md:space-y-0">
   <div class="aspect-square overflow-hidden rounded-2xl border border-latte bg-butter shadow-warm">
     {% if product.image %}
       <img src="{{ product.image.url }}" alt="{{ product.name }}" class="h-full w-full object-cover">
@@ -30,8 +32,9 @@
         {% endfor %}
       </div>
     </section>
-    <form method="post" action="{% url 'cart:add' product.id %}" data-product-customizer class="brand-card space-y-4 p-4">
+    <form method="post" action="{% url 'cart:add' product.id %}" data-cart-add data-cart-summary-url="{% url 'cart:summary' %}" data-product-customizer class="brand-card space-y-4 p-4">
       {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.get_full_path }}">
       <section>
         <h2 class="text-sm font-bold text-espresso">Personalizar</h2>
         <div class="mt-2 space-y-2">
@@ -52,11 +55,14 @@
         <span class="font-bold uppercase tracking-[0.16em] text-dust">Total</span>
         <strong class="brand-price" data-product-total data-base-price="{{ product.price }}">R$ {{ product.price }}</strong>
       </div>
+      <p class="cart-product-state" data-product-cart-state {% if not cart_quantity %}hidden{% endif %} aria-live="polite">No carrinho: <strong data-product-cart-quantity>{{ cart_quantity }}</strong> <span data-product-cart-unit>{{ cart_quantity|pluralize:'unidade,unidades' }}</span></p>
       <button class="brand-button w-full gap-2 text-sm" data-action-state data-idle-label="Adicionar ao carrinho" data-pending-label="Adicionando..." data-success-label="Adicionado">
-        <span class="material-symbols-outlined text-[19px]">shopping_bag</span>
+        <span class="material-symbols-outlined text-[19px]" aria-hidden="true">shopping_bag</span>
         Adicionar ao carrinho
       </button>
+      <p class="product-cart-feedback" data-product-cart-feedback role="status" hidden></p>
     </form>
   </div>
 </article>
+{% endwith %}
 {% endblock %}

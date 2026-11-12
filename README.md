@@ -105,6 +105,13 @@ e configure o servidor web para servir o diretório `staticfiles`.
 
 ## Feedback de ações
 
+Nos cards da página inicial e do catálogo, **Pedir** adiciona o produto sem
+sair da página. Produtos já adicionados ficam destacados e exibem **No carrinho**
+com a quantidade total, somando inclusive personalizações. O contador da sacola
+é atualizado na mesma ação. Os detalhes do produto também permitem adicionar
+sem redirecionar. Para finalizar, abra o carrinho pelo menu ou pelo ícone da sacola.
+Ao recarregar ou voltar do carrinho, as quantidades são consultadas novamente.
+
 O indicador de ações é compartilhado pelas páginas. Formulários POST recebem
 feedback durante o envio; personalize o botão com `data-pending-label` e
 `data-action-icon` (nome de um Material Symbol).
@@ -159,6 +166,26 @@ usa a data da última atualização do pagamento aprovado. Cadastros avançados
 (insumos, adicionais, alérgenos e estoque) permanecem no Django Admin
 (`/admin/`), disponível integralmente para superusuários.
 
+## Cartões cadastrados
+
+Em **Minha conta → Formas de pagamento**, o cliente pode cadastrar cartões de
+teste, escolher um padrão e remover cartões. No checkout, ao escolher cartão,
+selecione um dos cartões cadastrados ou use **Cadastrar cartão** para adicionar
+e visualizar o cartão salvo antes de voltar à finalização. Após cadastrar, a
+página recarrega na posição do novo cartão, com o formulário limpo e confirmação.
+Cartões vencidos e cartões de outros usuários não
+podem ser usados. A remoção preserva a identificação mascarada nos pedidos antigos.
+
+O cadastro faz parte do simulador local: aceita apenas os números de teste
+Visa `4242 4242 4242 4242` e Mastercard `5555 5555 5555 4444`, com validade atual
+ou futura. Não informe cartões reais. Não há cobrança ou integração com uma
+operadora; o resultado do pagamento continua sendo sorteado pelo simulador.
+São armazenados apenas titular, bandeira, últimos quatro dígitos, validade e
+referência aleatória. O número completo e o CVV não são armazenados; o formulário
+não solicita CVV. Os números de teste constam na
+[documentação da Stripe](https://docs.stripe.com/testing#cards); o projeto não usa
+a API da Stripe.
+
 ## Aplicativo instalável (PWA)
 
 O site inclui ícones próprios, manifest e service worker. Em navegadores que
@@ -197,6 +224,10 @@ para o cliente. Cada alteração registra responsável e horário. A tela impede
 pular ou retroceder etapas e protege contra atualizações de uma página desatualizada.
 O acompanhamento é por etapas informadas pela loja; não há localização GPS.
 Cada cliente só pode consultar seus próprios pedidos.
+Para pagamentos com cartão, o botão e o acesso ao rastreamento só são liberados
+quando o pagamento está aprovado. Pagamentos pendentes, recusados ou estornados
+não liberam o rastreamento de pedidos com cartão. Pix e dinheiro mantêm o
+acompanhamento disponível independentemente da aprovação.
 
 ## Observações
 

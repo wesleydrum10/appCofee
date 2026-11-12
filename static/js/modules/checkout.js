@@ -1,5 +1,17 @@
 import { formatBRL } from '../core/currency.js';
 
+const cards = document.querySelector('[data-checkout-cards]');
+if (cards) {
+  const select = cards.querySelector('select');
+  const updateCards = () => {
+    const useCard = document.querySelector('input[name="payment_method"]:checked')?.value === 'CARD';
+    cards.hidden = !useCard;
+    if (select) { select.disabled = !useCard; select.required = useCard; }
+  };
+  document.querySelectorAll('input[name="payment_method"]').forEach(input => input.addEventListener('change', updateCards));
+  updateCards();
+}
+
 const options = document.getElementById('checkout-delivery-options');
 if (options) {
   const quotes = JSON.parse(options.textContent);

@@ -1,7 +1,9 @@
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.cache import never_cache
+from django.utils.http import url_has_allowed_host_and_scheme
 
 from catalog.models import Product
 from coupons.services import CouponService
@@ -16,6 +18,12 @@ def detail(request):
     return render(request, "cart/detail.html", {"cart": cart, "totals": totals})
 
 
+@never_cache
+@require_GET
+def summary(request):
+    return JsonResponse(CartService.summary(CartService.get_or_create_cart(request)))
+
+
 @require_POST
 def add(request, product_id):
     cart = CartService.get_or_create_cart(request)
@@ -26,13 +34,16 @@ def add(request, product_id):
         CartService.add_product(cart, product, quantity, addon_ids)
         message = "Produto adicionado ao carrinho."
         if request.headers.get("accept") == "application/json":
-            return JsonResponse({"ok": True, "message": message, "count": CartService.item_count(cart)})
+            return JsonResponse({"ok": True, "message": message, **CartService.summary(cart)})
         messages.success(request, message)
     except (CartLimitExceeded, InsufficientStock, ValueError) as exc:
         if request.headers.get("accept") == "application/json":
             return JsonResponse({"ok": False, "message": str(exc)}, status=400)
         messages.error(request, str(exc))
-    return redirect("cart:detail")
+    next_url = request.POST.get("next", "")
+    if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}, require_https=request.is_secure()):
+        return redirect(next_url)
+    return redirect("catalog:product_list")
 
 
 @require_POST

@@ -52,6 +52,11 @@
         <label class="checkout-payment-option"><input type="radio" name="payment_method" value="CARD" required><span class="checkout-payment-body"><span class="checkout-payment-icon checkout-card material-symbols-outlined" aria-hidden="true">credit_card</span><span class="checkout-payment-copy"><strong>Cartão de crédito ou débito</strong><span>Pagamento simulado</span></span><span class="checkout-radio" aria-hidden="true"></span></span></label>
         <label class="checkout-payment-option"><input type="radio" name="payment_method" value="CASH" required><span class="checkout-payment-body"><span class="checkout-payment-icon checkout-cash material-symbols-outlined" aria-hidden="true">payments</span><span class="checkout-payment-copy"><strong>Dinheiro</strong><span>Pagamento na entrega</span></span><span class="checkout-radio" aria-hidden="true"></span></span></label>
       </fieldset>
+      <section class="checkout-saved-cards" data-checkout-cards aria-labelledby="saved-card-title">
+        <h2 id="saved-card-title">Cartão para este pedido</h2>
+        {% if saved_cards %}<label for="saved-card-select">Escolha um cartão cadastrado</label><select id="saved-card-select" name="saved_card_id"><option value="">Selecione um cartão</option>{% for card in saved_cards %}<option value="{{ card.pk }}" {% if card.is_default %}selected{% endif %}>{{ card.display_name }} · {{ card.expiry_month|stringformat:'02d' }}/{{ card.expiry_year }}</option>{% endfor %}</select>{% else %}<p>Cadastre um cartão de teste para pagar com cartão.</p>{% endif %}
+        <a href="{% url 'accounts:cards' %}?checkout=1#new-card">+ Cadastrar cartão</a><p>Pagamento simulado. Não há cobrança real.</p>
+      </section>
     </div>
     <div class="checkout-summary-column">
       <section class="checkout-summary" aria-labelledby="summary-title">
