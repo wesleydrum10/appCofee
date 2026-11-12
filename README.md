@@ -159,6 +159,22 @@ usa a data da última atualização do pagamento aprovado. Cadastros avançados
 (insumos, adicionais, alérgenos e estoque) permanecem no Django Admin
 (`/admin/`), disponível integralmente para superusuários.
 
+## Rastreamento da entrega
+
+Em Meus pedidos ou nos detalhes do pedido, o cliente pode usar **Rastrear entrega**
+para consultar as etapas, previsão inicial, endereço e histórico. A página consulta
+as atualizações da loja a cada 15 segundos e permite atualizar manualmente.
+Pedidos entregues ou cancelados encerram a consulta automática. Se a previsão
+inicial passar, a tela informa o atraso sem inventar uma nova previsão.
+
+Em `/dashboard/pedidos/`, o gerente abre **Gerenciar entrega** e avança por
+Confirmado → Preparando → Pronto → Saiu para entrega → Entregue. Também pode
+cancelar um pedido em andamento e escrever uma mensagem de até 180 caracteres
+para o cliente. Cada alteração registra responsável e horário. A tela impede
+pular ou retroceder etapas e protege contra atualizações de uma página desatualizada.
+O acompanhamento é por etapas informadas pela loja; não há localização GPS.
+Cada cliente só pode consultar seus próprios pedidos.
+
 ## Observações
 
 Clientes autenticados podem publicar e editar uma avaliação geral da loja em

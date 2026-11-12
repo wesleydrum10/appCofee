@@ -7,6 +7,7 @@
     <p class="text-xs font-bold uppercase tracking-[0.2em] text-caramel">Pedido</p>
     <h1 class="brand-heading text-[34px] leading-[42px] text-espresso">{{ order.number }}</h1>
     <p class="text-sm text-dust">Total R$ {{ order.total }}</p>
+    <a class="brand-button my-3" href="{% url 'orders:tracking' order.number %}"><span class="material-symbols-outlined" aria-hidden="true">local_shipping</span>Rastrear entrega</a>
     <p class="text-sm text-dust">Pagamento: {{ order.payment.get_method_display }} · <span class="status-badge" data-status="{{ order.payment.status }}" data-payment-status>{{ order.payment.get_status_display }}</span></p>
   </div>
   {% if order.payment and order.payment.method != 'CASH' %}

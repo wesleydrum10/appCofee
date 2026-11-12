@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import Count, F, Q
+from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
@@ -17,6 +18,9 @@ from accounts.models import User
 from catalog.models import Category, Product
 from inventory.models import InventoryItem
 from orders.models import Order
+from orders.services import OrderService
+from orders.tracking import tracking_context
+from .forms import DeliveryUpdateForm
 from .forms import CategoryForm, EmployeeEditForm, EmployeeForm, ExpenseForm, PaymentSettingsForm, PeriodForm, ProductForm
 from payments.models import PaymentSettings
 from coupons.models import Coupon
@@ -186,6 +190,28 @@ def order_list(request):
     if status in Order.Status.values:
         orders = orders.filter(status=status)
     return render(request, "reports/orders.html", {"section": "orders", "page": Paginator(orders, 20).get_page(request.GET.get("page")), "statuses": Order.Status.choices, "status": status})
+
+
+@manager_required
+def order_delivery(request, number):
+    order = get_object_or_404(Order.objects.select_related("user").prefetch_related("history"), number=number)
+    form = DeliveryUpdateForm(request.POST if request.method == "POST" else None, order=order)
+    if request.method == "POST" and form.is_valid():
+        with transaction.atomic():
+            locked = Order.objects.select_for_update().get(pk=order.pk)
+            if locked.status != form.cleaned_data["expected_status"]:
+                form.add_error(None, "O pedido foi atualizado por outra pessoa. Recarregue a página antes de continuar.")
+            else:
+                try:
+                    OrderService.change_status(locked, form.cleaned_data["status"], user=request.user, note=form.cleaned_data["note"])
+                except ValueError as exc:
+                    form.add_error(None, str(exc))
+                else:
+                    messages.success(request, "Etapa da entrega atualizada. O cliente já pode acompanhar a mudança.")
+                    return redirect("reports:order_delivery", number=number)
+    return render(request, "reports/order_delivery.html", {
+        **tracking_context(order), "section": "orders", "form": form,
+    })
 
 
 @manager_required

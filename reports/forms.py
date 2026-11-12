@@ -6,6 +6,28 @@ from accounts.models import User
 from catalog.models import Category, Product
 from .models import Expense
 from payments.models import PaymentSettings
+from orders.models import Order
+from orders.tracking import tracking_context
+
+
+class DeliveryUpdateForm(forms.Form):
+    expected_status = forms.ChoiceField(choices=Order.Status.choices, widget=forms.HiddenInput)
+    status = forms.ChoiceField(label="Próxima etapa")
+    note = forms.CharField(
+        label="Mensagem para o cliente", max_length=180, required=False,
+        widget=forms.Textarea(attrs={"rows": 3, "placeholder": "Ex.: Seu pedido saiu para entrega."}),
+    )
+
+    def __init__(self, *args, order, **kwargs):
+        super().__init__(*args, **kwargs)
+        context = tracking_context(order)
+        choices = []
+        if context["next_status"]:
+            choices.append((context["next_status"], context["next_label"]))
+        if not context["terminal"]:
+            choices.append((Order.Status.CANCELLED, "Cancelar pedido"))
+        self.fields["status"].choices = choices
+        self.fields["expected_status"].initial = order.status
 
 
 class PaymentSettingsForm(forms.ModelForm):

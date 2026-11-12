@@ -1,0 +1,16 @@
+{% extends "layouts/dashboard.html" %}
+{% load static %}
+{% block extra_css %}{{ block.super }}<link rel="stylesheet" href="{% static 'css/tracking.css' %}">{% endblock %}
+{% block content %}
+<div class="management-title"><h1>Entrega · {{ order.number }}</h1><a href="{% url 'reports:orders' %}">Voltar aos pedidos</a></div>
+<div class="delivery-page">
+  <p>Cliente: <strong>{{ order.user }}</strong></p>
+  {% include 'orders/_tracking.html' %}
+  {% if not terminal %}<form method="post" class="management-form">{% csrf_token %}
+    <h2>Atualizar entrega</h2><p>As etapas e a mensagem abaixo ficam visíveis para o cliente.</p>
+    {{ form.non_field_errors }}{{ form.expected_status }}{{ form.expected_status.errors }}
+    {% for field in form.visible_fields %}<div class="management-field">{{ field.label_tag }}{{ field }}{{ field.errors }}</div>{% endfor %}
+    <button type="submit" class="management-button" data-action-state data-pending-label="Atualizando entrega...">Salvar etapa</button>
+  </form>{% endif %}
+</div>
+{% endblock %}

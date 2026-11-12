@@ -20,6 +20,7 @@ urlpatterns = [
     path("despesas/<int:pk>/", views.expense_edit, name="expense_edit"),
     path("despesas/<int:pk>/excluir/", views.expense_delete, name="expense_delete"),
     path("pedidos/", views.order_list, name="orders"),
+    path("pedidos/<str:number>/entrega/", views.order_delivery, name="order_delivery"),
     path("configuracoes/pagamentos/", views.payment_settings, name="payment_settings"),
     path("cupons/", views.coupon_list, name="coupons"),
     path("cupons/novo/", views.coupon_edit, name="coupon_create"),

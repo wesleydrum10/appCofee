@@ -1,0 +1,77 @@
+{
+  "generator": "built-in image_gen",
+  "assets": [
+    {
+      "slug": "cappuccino-cremoso",
+      "prompt": "Use case: product-mockup. Asset type: square product photo for a Brazilian café online catalog. Subject: Cappuccino Cremoso, a cream ceramic cup filled with espresso and steamed milk with thick creamy foam and subtle latte art on a matching saucer. Warm beige stone tabletop, softly blurred café background, natural side window light, realistic appetizing food photography, three-quarter angle, centered complete product with generous crop-safe margins. No text, logos, watermark, people or collage. Generate a single square photograph. Save the generated file and include its local file path in output metadata if available.",
+      "source": "/home/wesley/.codex/generated_images/01a1cf98-4c7d-7ae3-ae17-853d5d49e8e1/exec-611d291c-9496-4027-895a-96860c499fcc.png",
+      "file": "media/products/cappuccino-cremoso.png"
+    },
+    {
+      "slug": "cold-brew-da-casa",
+      "prompt": "Use case: product-mockup. Asset type: square catalog food photo for a Brazilian café. Subject: Cold Brew da Casa: tall clear glass of dark cold brew coffee with transparent ice cubes and condensation, no milk. Warm beige stone tabletop, softly blurred cozy café background, soft natural side window light. Photorealistic appetizing professional food photography, three-quarter angle, one centered complete product with generous crop-safe margins, consistent warm cream and coffee tones. No people, text, logos, watermark or collage. Generate one square photo.",
+      "source": "/home/wesley/.codex/generated_images/01a1cf98-4c7d-7ae3-ae17-853d5d49e8e1/exec-b197169b-141a-4a54-a273-b5a8ff3dc4d3.png",
+      "file": "media/products/cold-brew-da-casa.png"
+    },
+    {
+      "slug": "espresso-duplo",
+      "prompt": "Use case: product-mockup. Asset type: square catalog food photo for a Brazilian café. Subject: Espresso Duplo: a small cream ceramic demitasse on a matching saucer, double espresso with rich golden crema. Warm beige stone tabletop, softly blurred cozy café background, soft natural side window light. Photorealistic appetizing professional food photography, three-quarter angle, one centered complete product with generous crop-safe margins, consistent warm cream and coffee tones. No people, text, logos, watermark or collage. Generate one square photo.",
+      "source": "/home/wesley/.codex/generated_images/01a1cf98-4c7d-7ae3-ae17-853d5d49e8e1/exec-5b779674-ee40-4ddd-86e2-4b5c5a8e099d.png",
+      "file": "media/products/espresso-duplo.png"
+    },
+    {
+      "slug": "latte-de-baunilha",
+      "prompt": "Use case: product-mockup. Asset type: square catalog food photo for a Brazilian café. Subject: Latte de Baunilha: a clear glass mug of creamy pale coffee latte with fine milk foam and delicate latte art, vanilla bean beside the mug. Warm beige stone tabletop, softly blurred cozy café background, soft natural side window light. Photorealistic appetizing professional food photography, three-quarter angle, one centered complete product with generous crop-safe margins, consistent warm cream and coffee tones. No people, text, logos, watermark or collage. Generate one square photo.",
+      "source": "/home/wesley/.codex/generated_images/01a1cf98-4c7d-7ae3-ae17-853d5d49e8e1/exec-8c659d49-291d-4fdc-81d3-6fd426211558.png",
+      "file": "media/products/latte-de-baunilha.png"
+    },
+    {
+      "slug": "mocha-de-chocolate",
+      "prompt": "Use case: product-mockup. Asset type: square catalog food photo for a Brazilian café. Subject: Mocha de Chocolate: clear glass mug of chocolate espresso and steamed milk, topped with whipped cream and a delicate chocolate drizzle. Warm beige stone tabletop, softly blurred cozy café background, soft natural side window light. Photorealistic appetizing professional food photography, three-quarter angle, one centered complete product with generous crop-safe margins, consistent warm cream and coffee tones. No people, text, logos, watermark or collage. Generate one square photo.",
+      "source": "/home/wesley/.codex/generated_images/01a1cf98-4c7d-7ae3-ae17-853d5d49e8e1/exec-35846228-ae26-44ec-b4d6-2f6a261dc7db.png",
+      "file": "media/products/mocha-de-chocolate.png"
+    },
+    {
+      "slug": "cupcake-red-velvet",
+      "prompt": "Use case: product-mockup. Asset type: square catalog food photo for a Brazilian café. Subject: Cupcake Red Velvet: one rich red velvet cupcake in a plain brown paper liner with a generous ivory cream cheese frosting swirl, a few red cake crumbs on top, on a cream ceramic dessert plate. Warm beige stone tabletop, softly blurred cozy café background, soft natural side window light. Photorealistic appetizing professional food photography, three-quarter angle, one centered complete product with generous crop-safe margins, consistent warm cream and coffee tones. No drinks, people, text, logos, watermark or collage. Generate one square photo.",
+      "source": "/home/wesley/.codex/generated_images/01a1cf98-4c7d-7ae3-ae17-853d5d49e8e1/exec-dcaa9da7-412c-4a36-88f1-675bc0a961b0.png",
+      "file": "media/products/cupcake-red-velvet.png"
+    },
+    {
+      "slug": "cupcake-chocolate-intenso",
+      "prompt": "Use case: product-mockup. Asset type: square catalog food photo for a Brazilian café. Subject: Cupcake Chocolate Intenso: one dark cocoa cupcake in a plain brown paper liner with a generous glossy dark chocolate ganache swirl and chocolate shavings, on a cream ceramic dessert plate. Warm beige stone tabletop, softly blurred cozy café background, soft natural side window light. Photorealistic appetizing professional food photography, three-quarter angle, one centered complete product with generous crop-safe margins, consistent warm cream and coffee tones. No drinks, people, text, logos, watermark or collage. Generate one square photo.",
+      "source": "/home/wesley/.codex/generated_images/01a1cf98-4c7d-7ae3-ae17-853d5d49e8e1/exec-02e20c28-629a-42cf-8e4c-3367dee96660.png",
+      "file": "media/products/cupcake-chocolate-intenso.png"
+    },
+    {
+      "slug": "cupcake-de-cenoura",
+      "prompt": "Use case: product-mockup. Asset type: square catalog food photo for a Brazilian café. Subject: Cupcake de Cenoura: one golden orange Brazilian carrot cupcake in a plain brown paper liner, topped with a thick glossy brigadeiro chocolate frosting swirl, on a cream ceramic dessert plate. Warm beige stone tabletop, softly blurred cozy café background, soft natural side window light. Photorealistic appetizing professional food photography, three-quarter angle, one centered complete product with generous crop-safe margins, consistent warm cream and coffee tones. No drinks, people, text, logos, watermark or collage. Generate one square photo.",
+      "source": "/home/wesley/.codex/generated_images/01a1cf98-4c7d-7ae3-ae17-853d5d49e8e1/exec-192ee79f-8e5c-4a87-bc9a-51f99a0b6811.png",
+      "file": "media/products/cupcake-de-cenoura.png"
+    },
+    {
+      "slug": "cupcake-de-limao",
+      "prompt": "Use case: product-mockup. Asset type: square catalog food photo for a Brazilian café. Subject: Cupcake de Limão: one golden lemon cupcake in a plain brown paper liner topped with an ivory meringue swirl, fine fresh green lime zest and a small lime wedge, on a cream ceramic dessert plate. Warm beige stone tabletop, softly blurred cozy café background, soft natural side window light. Photorealistic appetizing professional food photography, three-quarter angle, one centered complete product with generous crop-safe margins, consistent warm cream and coffee tones. No drinks, people, text, logos, watermark or collage. Generate one square photo.",
+      "source": "/home/wesley/.codex/generated_images/01a1cf98-4c7d-7ae3-ae17-853d5d49e8e1/exec-3df699ca-5124-4163-9c54-6edda4ccc2b3.png",
+      "file": "media/products/cupcake-de-limao.png"
+    },
+    {
+      "slug": "cupcake-de-morango",
+      "prompt": "Use case: product-mockup. Asset type: square catalog food photo for a Brazilian café. Subject: Cupcake de Morango: one vanilla cupcake in a plain brown paper liner topped with white whipped cream, a little glossy strawberry jam and a fresh strawberry half, on a cream ceramic dessert plate. Warm beige stone tabletop, softly blurred cozy café background, soft natural side window light. Photorealistic appetizing professional food photography, three-quarter angle, one centered complete product with generous crop-safe margins, consistent warm cream and coffee tones. No drinks, people, text, logos, watermark or collage. Generate one square photo.",
+      "source": "/home/wesley/.codex/generated_images/01a1cf98-4c7d-7ae3-ae17-853d5d49e8e1/exec-39a02353-a6da-4b05-9ad4-197d0a4e60ee.png",
+      "file": "media/products/cupcake-de-morango.png"
+    },
+    {
+      "slug": "brownie-com-nozes",
+      "prompt": "Use case: product-mockup. Asset type: square catalog food photo for a Brazilian café. Subject: Brownie com Nozes: one thick square dark chocolate brownie with a delicate crackly crust and visible walnut pieces, moist fudgy center visible along its edges, on a cream ceramic dessert plate. Warm beige stone tabletop, softly blurred cozy café background, soft natural side window light. Photorealistic appetizing professional food photography, three-quarter angle, one centered complete product with generous crop-safe margins, consistent warm cream and coffee tones. No drinks, people, text, logos, watermark or collage. Generate one square photo.",
+      "source": "/home/wesley/.codex/generated_images/01a1cf98-4c7d-7ae3-ae17-853d5d49e8e1/exec-b3416ea7-88f3-4b9f-a787-da1df0610a2c.png",
+      "file": "media/products/brownie-com-nozes.png"
+    },
+    {
+      "slug": "cookie-de-chocolate",
+      "prompt": "Use case: product-mockup. Asset type: square catalog food photo for a Brazilian café. Subject: Cookie de Chocolate: one large round artisan cookie with golden crispy edges, a soft baked center and plentiful dark chocolate chunks, on a cream ceramic dessert plate. Warm beige stone tabletop, softly blurred cozy café background, soft natural side window light. Photorealistic appetizing professional food photography, three-quarter angle, one centered complete product with generous crop-safe margins, consistent warm cream and coffee tones. No drinks, people, text, logos, watermark or collage. Generate one square photo.",
+      "source": "/home/wesley/.codex/generated_images/01a1cf98-4c7d-7ae3-ae17-853d5d49e8e1/exec-14688c85-d9b4-49a7-9a2e-51db14380e28.png",
+      "file": "media/products/cookie-de-chocolate.png"
+    }
+  ]
+}

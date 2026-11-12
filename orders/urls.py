@@ -9,4 +9,6 @@ urlpatterns = [
     path("criar/", views.create, name="create"),
     path("pedidos/", views.order_list, name="list"),
     path("pedidos/<str:number>/", views.detail, name="detail"),
+    path("pedidos/<str:number>/rastrear/", views.tracking, name="tracking"),
+    path("pedidos/<str:number>/rastrear/status/", views.tracking_status, name="tracking_status"),
 ]

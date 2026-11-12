@@ -4,6 +4,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
+from django.views.decorators.cache import never_cache
+from django.http import JsonResponse
+from django.template.loader import render_to_string
 
 from accounts.models import Address
 from cart.services import CartService
@@ -12,6 +15,7 @@ from payments.models import Payment, PaymentSettings
 from payments.services import PAYMENT_MESSAGES
 from .models import Order
 from .services import DeliveryProvider, OrderService
+from .tracking import tracking_context
 
 
 @login_required
@@ -56,6 +60,24 @@ def create(request):
 def order_list(request):
     orders = request.user.orders.select_related("payment").prefetch_related("items").all()
     return render(request, "orders/list.html", {"orders": orders})
+
+
+@never_cache
+@login_required
+def tracking(request, number):
+    order = get_object_or_404(request.user.orders.prefetch_related("history"), number=number)
+    return render(request, "orders/tracking.html", tracking_context(order))
+
+
+@never_cache
+@login_required
+def tracking_status(request, number):
+    order = get_object_or_404(request.user.orders.prefetch_related("history"), number=number)
+    context = tracking_context(order)
+    return JsonResponse({
+        "html": render_to_string("orders/_tracking.html", context, request=request),
+        "terminal": context["terminal"],
+    })
 
 
 @login_required

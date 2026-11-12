@@ -1,0 +1,13 @@
+{% extends "layouts/storefront.html" %}
+{% load static %}
+{% block title %}Rastrear {{ order.number }} | Café & Cupcakes{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/tracking.css' %}">{% endblock %}
+{% block content %}
+<section class="delivery-page" data-delivery-tracking data-status-url="{% url 'orders:tracking_status' order.number %}">
+  <a href="{% url 'orders:detail' order.number %}">← Detalhes do pedido</a>
+  <header><p>Acompanhe seu pedido</p><h1 class="brand-heading">Rastrear entrega</h1><strong>{{ order.number }}</strong></header>
+  <div data-tracking-content>{% include 'orders/_tracking.html' %}</div>
+  <div class="delivery-refresh"><p data-tracking-feedback role="status" aria-live="polite">{% if terminal %}Acompanhamento encerrado.{% else %}Atualizações da loja consultadas automaticamente a cada 15 segundos.{% endif %}</p><button type="button" class="brand-button" data-tracking-refresh>Atualizar agora</button></div>
+</section>
+{% endblock %}
+{% block extra_js %}<script type="module" src="{% static 'js/modules/tracking.js' %}"></script>{% endblock %}
