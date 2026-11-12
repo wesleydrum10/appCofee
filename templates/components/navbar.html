@@ -1,9 +1,8 @@
+{% load static %}
 <header class="sticky top-0 z-30 border-b border-latte bg-cream/90 backdrop-blur-xl shadow-float pt-safe">
   <div class="storefront-header-inner mx-auto flex min-h-16 max-w-6xl items-center justify-between gap-3 px-4 md:px-8">
     <a href="{% url 'core:home' %}" class="flex min-w-0 items-center gap-2">
-      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-espresso text-cream shadow-warm">
-        <span class="material-symbols-outlined text-[21px]" style="font-variation-settings:'FILL' 1;">local_cafe</span>
-      </span>
+      <img class="app-brand-icon" src="{% static 'icons/icon.svg' %}" width="40" height="40" alt="">
       <span class="min-w-0">
         <span class="brand-heading block truncate text-xl leading-6 text-espresso">Veludo &amp; Grão</span>
         <span class="block truncate text-[11px] font-bold uppercase tracking-[0.18em] text-caramel">Café artesanal</span>

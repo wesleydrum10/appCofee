@@ -1,0 +1,20 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#2b1e1a"><title>Sem conexão | Veludo &amp; Grão</title>
+  <link rel="icon" href="{% static 'icons/icon.svg' %}" type="image/svg+xml">
+  <style>
+    *{box-sizing:border-box}body{margin:0;min-height:100svh;background:#fcf9f4;color:#2b1e1a;display:grid;place-items:center;padding:24px;font-family:system-ui,sans-serif}main{max-width:460px;text-align:center}img{width:96px;height:96px;border-radius:24px}small{display:block;color:#9c6234;font-weight:700;letter-spacing:.12em;margin:24px 0 12px}h1{font-family:Georgia,serif;font-size:36px;line-height:1.15;margin:0 0 20px}p{color:#7c6c67;line-height:1.7}button,a{display:block;width:100%;padding:15px 20px;border-radius:14px;font:600 15px system-ui;text-decoration:none;cursor:pointer}button{border:0;background:#2b1e1a;color:#fcf9f4;margin-top:28px}a{color:#482d25;margin-top:10px}button:focus-visible,a:focus-visible{outline:3px solid #c88242;outline-offset:4px}
+  </style>
+</head>
+<body><main>
+  <img src="{% static 'icons/icon-192.png' %}" alt="" width="96" height="96">
+  <small>VELUDO &amp; GRÃO</small><h1>Uma pausa na conexão.</h1>
+  <p>Não conseguimos conectar à cafeteria. Confira sua internet e tente novamente.</p>
+  <p>Para consultar pedidos, acompanhar entregas e fazer pagamentos, precisamos estar conectados.</p>
+  <button type="button" onclick="window.location.reload()">Tentar novamente</button>
+  <a href="{% url 'core:home' %}">Voltar ao início</a>
+</main></body>
+</html>

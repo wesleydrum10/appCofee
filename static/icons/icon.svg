@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <title>Veludo &amp; Grão</title>
+  <rect width="512" height="512" rx="112" fill="#2b1e1a"/>
+  <circle cx="256" cy="256" r="180" fill="#c88242" opacity=".12"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M207 199c-24-26 26-32 2-59M260 199c-24-26 26-32 2-59M313 199c-24-26 26-32 2-59" stroke="#d99557" stroke-width="15"/>
+    <path d="M329 239h14c52 0 52 68 0 68h-14" stroke="#fcf9f4" stroke-width="21"/>
+  </g>
+  <path d="M148 229h183v58c0 44-35 72-79 72h-25c-44 0-79-28-79-72z" fill="#fcf9f4"/>
+  <ellipse cx="240" cy="232" rx="80" ry="14" fill="#c88242"/>
+  <path d="M147 377h211" fill="none" stroke="#d99557" stroke-width="17" stroke-linecap="round"/>
+  <path d="M219 277c0-19 25-23 25-8 0-15 25-11 25 8 0 14-25 29-25 29s-25-15-25-29" fill="#c88242"/>
+</svg>

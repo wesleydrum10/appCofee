@@ -159,6 +159,29 @@ usa a data da última atualização do pagamento aprovado. Cadastros avançados
 (insumos, adicionais, alérgenos e estoque) permanecem no Django Admin
 (`/admin/`), disponível integralmente para superusuários.
 
+## Aplicativo instalável (PWA)
+
+O site inclui ícones próprios, manifest e service worker. Em navegadores que
+oferecem instalação, o botão **Instalar aplicativo** aparece quando a instalação
+está disponível. No iPhone/iPad, abra no Safari e use **Compartilhar → Adicionar
+à Tela de Início**. O aplicativo abre em uma janela própria.
+
+Em desenvolvimento, utilize `http://localhost:8001`. Em produção, o PWA precisa
+de **HTTPS**, incluindo ao acessar pelo celular em outro dispositivo. Um endereço
+HTTP da rede local não habilita o service worker. Os arquivos estáticos devem
+estar publicados e `/service-worker.js` precisa permanecer acessível na raiz,
+com seu tipo JavaScript e sem cache permanente.
+
+Sem internet, a navegação exibe uma página de conexão indisponível com opção de
+tentar novamente. Apenas essa página e os ícones são guardados no cache do PWA;
+pedidos, pagamentos, endereços, entregas e páginas administrativas não são salvos
+para uso offline. Não há envio de pedidos nem pagamentos em segundo plano.
+
+Os ícones estão em `static/icons/`; `icon.svg` é a fonte vetorial. Foram incluídos
+favicon ICO (16/32/48 px), ícones de instalação 192/512 px, versões maskable
+192/512 px e ícone Apple de 180 px. Ao modificar os recursos pré-armazenados,
+atualize a versão do cache em `core/templates/core/service-worker.js`.
+
 ## Rastreamento da entrega
 
 Em Meus pedidos ou nos detalhes do pedido, o cliente pode usar **Rastrear entrega**

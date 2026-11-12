@@ -1,0 +1,12 @@
+{% load static %}
+<aside class="pwa-install" data-pwa-install hidden aria-label="Instalar aplicativo">
+  <img src="{% static 'icons/icon-192.png' %}" alt="" width="48" height="48">
+  <div><strong>Veludo &amp; Grão no seu celular</strong><p>Acesse a cafeteria pela tela inicial.</p><button type="button" data-pwa-install-button>Instalar aplicativo</button></div>
+  <button type="button" class="pwa-close" data-pwa-dismiss aria-label="Fechar sugestão de instalação">×</button>
+</aside>
+<dialog class="pwa-help" data-pwa-help aria-labelledby="pwa-help-title">
+  <img src="{% static 'icons/icon-192.png' %}" alt="" width="64" height="64">
+  <h2 id="pwa-help-title">Sua cafeteria na tela inicial</h2>
+  <p>No Safari, abra <strong>Compartilhar</strong>, selecione <strong>Adicionar à Tela de Início</strong> e confirme em <strong>Adicionar</strong>.</p>
+  <button type="button" data-pwa-help-close>Entendi</button>
+</dialog>
