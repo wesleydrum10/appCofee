@@ -1,0 +1,62 @@
+{% extends "layouts/storefront.html" %}
+{% load static %}
+{% block title %}Endereços | Veludo & Grão{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/addresses.css' %}">{% endblock %}
+{% block content %}
+<section class="addresses-page">
+  <header class="addresses-heading">
+    <p class="addresses-eyebrow">Entrega</p>
+    <h1 class="brand-heading">Meus endereços</h1>
+    <p>Seus lugares favoritos para receber um momento de doçura.</p>
+  </header>
+  <div class="addresses-saved">
+    {% for address in addresses %}
+      <article class="address-card">
+        <div class="address-card-heading">
+          <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+          <h2>{{ address.label }}</h2>
+          {% if address.is_default %}<span class="address-default">Padrão</span>{% endif %}
+        </div>
+        <p class="address-recipient">{{ address.recipient_name }}</p>
+        <p>{{ address.street }}, {{ address.number }}{% if address.complement %} · {{ address.complement }}{% endif %}</p>
+        <p>{{ address.district }} · {{ address.city }}/{{ address.state }}</p>
+        <p>CEP {{ address.postal_code }}</p>
+      </article>
+    {% empty %}
+      <div class="addresses-empty">
+        <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+        <div><h2>Nenhum endereço cadastrado</h2><p>Adicione seu primeiro endereço para receber seus pedidos.</p></div>
+      </div>
+    {% endfor %}
+  </div>
+  <form method="post" class="address-form">
+    {% csrf_token %}
+    <div class="address-form-heading"><span class="material-symbols-outlined" aria-hidden="true">add_location_alt</span><h2>Novo endereço</h2></div>
+    {% if form.non_field_errors %}<div class="address-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="address-fields">
+      {% for field in form %}
+        {% if field.name == 'is_default' %}
+        <div class="address-default-field">
+          <label for="{{ field.id_for_label }}">{{ field }} <span>{{ field.label }}</span></label>
+          {% if field.errors %}<div class="address-errors" id="{{ field.auto_id }}_errors" role="alert">{{ field.errors }}</div>{% endif %}
+        </div>
+        {% else %}
+        <div class="address-field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %}<span>Opcional</span>{% endif %}</label>
+          {% if field.name == 'postal_code' %}
+          <div class="address-postal-wrap">
+            {{ field }}
+            <button type="button" class="address-postal-search" aria-label="Buscar endereço pelo CEP" title="Buscar endereço pelo CEP"><span class="material-symbols-outlined" aria-hidden="true">search</span></button>
+          </div>
+          <p id="postal-code-status" class="address-postal-status" role="status" aria-live="polite" hidden></p>
+          {% else %}{{ field }}{% endif %}
+          {% if field.errors %}<div class="address-errors" id="{{ field.auto_id }}_errors" role="alert">{{ field.errors }}</div>{% endif %}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div class="address-form-actions"><button class="brand-button" type="submit" data-action-state data-pending-label="Salvando endereço..." data-action-icon="location_on"><span class="material-symbols-outlined" aria-hidden="true">save</span>Salvar endereço</button></div>
+  </form>
+</section>
+{% endblock %}
+{% block extra_js %}<script type="module" src="{% static 'js/modules/addresses.js' %}" defer></script>{% endblock %}

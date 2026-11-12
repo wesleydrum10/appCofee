@@ -1,0 +1,10 @@
+{% extends "layouts/dashboard.html" %}
+{% block content %}
+<div class="management-title"><h1>Configurações de pagamento</h1></div>
+<form method="post" class="management-form">{% csrf_token %}
+  {{ form.non_field_errors }}
+  <div class="payment-setting-row"><label class="management-switch" for="{{ form.simulation_enabled.id_for_label }}">{{ form.simulation_enabled }}<span class="management-switch-track" aria-hidden="true"></span><span>{{ form.simulation_enabled.label }}</span></label><span class="setting-state">{% if configuration.simulation_enabled %}Ativada{% else %}Desativada{% endif %}</span></div>
+  {{ form.simulation_enabled.errors }}
+  <div class="management-actions"><button class="management-button" type="submit"><span class="material-symbols-outlined" aria-hidden="true">save</span>Salvar</button></div>
+</form>
+{% endblock %}

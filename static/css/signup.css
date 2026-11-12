@@ -1,0 +1,17 @@
+.signup-page { padding-top: 24px; }
+.signup-intro { margin-bottom: 24px; }
+.signup-brand-icon { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 16px; border-radius: 50%; background: #feb06b; color: #784102; font-size: 24px; }
+.signup-intro .signup-eyebrow { color: #8b5013; font-size: 11px; line-height: 18px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+.signup-intro h1 { font-family: 'Playfair Display', serif; font-size: 30px; line-height: 38px; font-weight: 600; color: #120805; margin-bottom: 8px; }
+.signup-intro > p:last-child { color: #4f4542; }
+.signup-page .login-field input { border: 1px solid #e8dec8; }
+.signup-page .login-field input[aria-invalid="true"] { border-color: #ba1a1a; }
+.signup-password-help, .signup-field-help { color: #7c6c67; font-size: 12px; line-height: 18px; }
+.signup-password-help summary { cursor: pointer; color: #8b5013; width: fit-content; padding: 4px 0; }
+.signup-password-help summary:focus-visible { outline: 2px solid #8b5013; outline-offset: 3px; }
+.signup-password-help ul { list-style: disc; padding-left: 18px; margin-top: 6px; }
+.signup-password-help li + li { margin-top: 4px; }
+.signup-login-link { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 24px; font-size: 14px; color: #7c6c67; }
+.signup-login-link a { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: #8b5013; font-weight: 600; }
+.signup-login-link a:hover { color: #2b1e1a; }
+.signup-login-link .material-symbols-outlined { font-size: 18px; }

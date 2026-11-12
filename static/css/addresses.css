@@ -1,0 +1,48 @@
+.addresses-page { max-width: 800px; margin: 16px auto 0; color: #2b1e1a; font-size: 14px; line-height: 22px; }
+.addresses-heading { margin-bottom: 24px; }
+.addresses-eyebrow { color: #8b5013; font-size: 11px; line-height: 18px; font-weight: 700; text-transform: uppercase; }
+.addresses-heading h1 { font-size: 32px; line-height: 40px; margin: 4px 0 8px; }
+.addresses-heading > p:last-child { color: #7c6c67; }
+.addresses-saved { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 32px; }
+.address-card { min-width: 0; border: 1px solid #e8dec8; border-radius: 8px; background: #fff; padding: 16px; color: #7c6c67; overflow-wrap: anywhere; }
+.address-card-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; color: #2b1e1a; }
+.address-card-heading > .material-symbols-outlined { color: #8b5013; font-size: 20px; }
+.address-card-heading h2 { font-size: 14px; font-weight: 700; }
+.address-default { border-radius: 100px; padding: 2px 8px; font-size: 11px; line-height: 18px; background: #eaf2ed; color: #3d7b54; font-weight: 600; }
+.address-recipient { color: #4a3c38; font-weight: 600; margin-bottom: 4px; }
+.addresses-empty { grid-column: 1 / -1; display: flex; align-items: center; gap: 16px; padding: 20px 0; border-top: 1px solid #e8dec8; border-bottom: 1px solid #e8dec8; }
+.addresses-empty > .material-symbols-outlined { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; background: #f4ece1; color: #8b5013; }
+.addresses-empty h2 { font-weight: 600; }
+.addresses-empty p { color: #7c6c67; margin-top: 4px; font-size: 12px; line-height: 18px; }
+.address-form-heading { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+.address-form-heading .material-symbols-outlined { color: #8b5013; font-size: 22px; }
+.address-form-heading h2 { font-family: 'Playfair Display', serif; font-size: 24px; line-height: 32px; font-weight: 600; }
+.address-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 16px; }
+.address-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.address-default-field { grid-column: 1 / -1; }
+.address-field > label { display: flex; justify-content: space-between; gap: 8px; font-weight: 600; font-size: 12px; line-height: 18px; }
+.address-field > label span { color: #7c6c67; font-weight: 400; }
+.address-form .address-input { width: 100%; height: 48px; border: 1px solid #e8dec8; border-radius: 12px; padding: 0 14px; background: #fff; color: #2b1e1a; font: inherit; box-shadow: 0 1px 3px #2b1e1a0d; }
+.address-input::placeholder { color: #a99a95; }
+.address-form .address-input:focus { outline: none; border-color: #8b5013; box-shadow: 0 0 0 3px #c8824226; }
+.address-form .address-input[aria-invalid="true"] { border-color: #ba1a1a; }
+.address-default-field label { display: flex; align-items: center; gap: 10px; width: fit-content; min-height: 44px; cursor: pointer; }
+.address-checkbox { flex-shrink: 0; width: 20px; height: 20px; accent-color: #2b1e1a; }
+.address-form-actions { display: flex; justify-content: flex-end; padding-top: 20px; margin-top: 12px; border-top: 1px solid #e8dec8; }
+.address-form-actions button { gap: 8px; min-height: 48px; }
+.address-form-actions .material-symbols-outlined { font-size: 20px; }
+.address-errors { color: #ba1a1a; font-size: 12px; line-height: 18px; }
+.address-postal-wrap { position: relative; }
+.address-postal-wrap .address-input { padding-right: 52px; }
+.address-postal-search { position: absolute; top: 2px; right: 2px; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 10px; color: #8b5013; }
+.address-postal-search:hover { background: #f4ece1; }
+.address-postal-search:focus-visible { outline: 2px solid #8b5013; outline-offset: 2px; }
+.address-postal-search:disabled { opacity: .5; cursor: wait; }
+.address-postal-status { color: #7c6c67; font-size: 12px; line-height: 18px; }
+.address-postal-status[data-state="error"] { color: #b84a39; }
+.address-postal-status[data-state="success"] { color: #3d7b54; }
+@media (max-width: 639px) {
+  .addresses-saved, .address-fields { grid-template-columns: minmax(0, 1fr); }
+  .addresses-heading h1 { font-size: 28px; line-height: 36px; }
+  .address-form-actions button { width: 100%; }
+}

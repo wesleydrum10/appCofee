@@ -1,0 +1,7 @@
+{% extends "layouts/dashboard.html" %}
+{% block content %}
+<div class="management-title"><h1>Categorias</h1><a class="management-button" href="{% url 'reports:category_create' %}"><span class="material-symbols-outlined" aria-hidden="true">add</span>Nova categoria</a></div>
+<div class="management-table"><table><thead><tr><th>Nome</th><th>Situação</th><th></th></tr></thead><tbody>
+{% for category in page %}<tr><td>{{ category.name }}</td><td>{% if category.is_active %}Ativa{% else %}Inativa{% endif %}</td><td><a href="{% url 'reports:category_edit' category.pk %}" title="Editar {{ category }}" aria-label="Editar {{ category }}"><span class="material-symbols-outlined" aria-hidden="true">edit</span></a></td></tr>{% empty %}<tr><td colspan="3">Nenhuma categoria cadastrada.</td></tr>{% endfor %}
+</tbody></table></div>{% include 'reports/pagination.html' %}
+{% endblock %}

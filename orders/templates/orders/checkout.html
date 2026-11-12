@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Finalização do pedido | Veludo & Grão{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/checkout.css' %}">{% endblock %}
+{% block header %}
+<header class="checkout-header">
+  <nav aria-label="Navegação do checkout">
+    <a class="checkout-icon-button" href="{% url 'cart:detail' %}" aria-label="Voltar à sacola"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span></a>
+    <h1>Finalização do pedido</h1>
+    <a class="checkout-icon-button checkout-bag" href="{% url 'cart:detail' %}" aria-label="Sacola, {{ item_count }} itens"><span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span><span>{{ item_count }}</span></a>
+    <a class="checkout-icon-button" href="{% url 'accounts:profile' %}" aria-label="Minha conta"><span class="checkout-avatar">{{ request.user.first_name|first|default:"V"|upper }}</span></a>
+  </nav>
+</header>
+{% endblock %}
+{% block main %}
+<main class="checkout-page">
+  {% include "components/alert.html" %}
+  <ol class="checkout-steps" aria-label="Etapas do pedido">
+    <li class="{% if addresses %}is-complete{% else %}is-current{% endif %}"><span class="material-symbols-outlined" aria-hidden="true">{% if addresses %}check{% else %}location_on{% endif %}</span><span>Endereço</span></li>
+    <li class="{% if addresses %}is-current{% endif %}" {% if addresses %}aria-current="step"{% endif %}><span class="material-symbols-outlined" aria-hidden="true">credit_card</span><span>Pagamento</span></li>
+    <li><span class="material-symbols-outlined" aria-hidden="true">receipt_long</span><span>Confirmação</span></li>
+  </ol>
+  {% if not items %}
+  <section class="checkout-empty"><span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span><h2>Sua sacola está vazia</h2><p>Escolha suas delícias antes de finalizar o pedido.</p><a class="brand-button" href="{% url 'catalog:product_list' %}">Ver cardápio</a></section>
+  {% elif not addresses %}
+  <section class="checkout-empty"><span class="material-symbols-outlined" aria-hidden="true">add_location_alt</span><h2>Onde vamos entregar?</h2><p>Cadastre um endereço para continuar seu pedido.</p><a class="brand-button" href="{% url 'accounts:addresses' %}">Adicionar endereço</a></section>
+  {% else %}
+  <form method="post" action="{% url 'orders:create' %}" class="checkout-form">
+    {% csrf_token %}
+    <div class="checkout-options">
+      <section class="checkout-address" aria-label="Endereço de entrega">
+        <div class="checkout-address-heading">
+          <span class="checkout-location material-symbols-outlined" aria-hidden="true">location_on</span>
+          <div><span class="checkout-eyebrow">Entrega Veludo &amp; Grão</span>
+          {% for address in addresses %}<h2 data-address-heading="{{ address.pk }}" {% if address.pk != selected_address.pk %}hidden{% endif %}>{{ address.street }}, {{ address.number }}</h2>{% endfor %}</div>
+          <details class="checkout-address-picker">
+            <summary>Alterar</summary>
+            <fieldset><legend>Escolha o endereço</legend>
+            {% for address in addresses %}<label><input type="radio" name="address_id" value="{{ address.pk }}" {% if address.pk == selected_address.pk %}checked{% endif %} required><span><strong>{{ address.label }}</strong><span>{{ address.street }}, {{ address.number }} · {{ address.city }}/{{ address.state }}</span></span></label>{% endfor %}
+            <a href="{% url 'accounts:addresses' %}"><span class="material-symbols-outlined" aria-hidden="true">add_location_alt</span>Novo endereço</a></fieldset>
+          </details>
+        </div>
+        <div class="checkout-address-info">
+          {% for address in addresses %}<p data-address-info="{{ address.pk }}" {% if address.pk != selected_address.pk %}hidden{% endif %}>{% if address.complement %}{{ address.complement }} · {% endif %}{{ address.district }}, {{ address.city }}/{{ address.state }} · CEP {{ address.postal_code }}</p>{% endfor %}
+          <p class="checkout-estimate"><span class="material-symbols-outlined" aria-hidden="true">moped</span><strong data-delivery-estimate>Previsão: {{ delivery.minutes }} min</strong></p>
+          <p data-delivery-message>{{ delivery.message }}</p>
+        </div>
+      </section>
+      <fieldset class="checkout-payment">
+        <legend>Forma de pagamento</legend>
+        <label class="checkout-payment-option"><input type="radio" name="payment_method" value="PIX" checked required><span class="checkout-payment-body"><span class="checkout-payment-icon checkout-pix material-symbols-outlined" aria-hidden="true">qr_code_2</span><span class="checkout-payment-copy"><strong>Pix imediato</strong><span>Pagamento via Pix</span></span><span class="checkout-radio" aria-hidden="true"></span></span></label>
+        <label class="checkout-payment-option"><input type="radio" name="payment_method" value="CARD" required><span class="checkout-payment-body"><span class="checkout-payment-icon checkout-card material-symbols-outlined" aria-hidden="true">credit_card</span><span class="checkout-payment-copy"><strong>Cartão de crédito ou débito</strong><span>Pagamento simulado</span></span><span class="checkout-radio" aria-hidden="true"></span></span></label>
+        <label class="checkout-payment-option"><input type="radio" name="payment_method" value="CASH" required><span class="checkout-payment-body"><span class="checkout-payment-icon checkout-cash material-symbols-outlined" aria-hidden="true">payments</span><span class="checkout-payment-copy"><strong>Dinheiro</strong><span>Pagamento na entrega</span></span><span class="checkout-radio" aria-hidden="true"></span></span></label>
+      </fieldset>
+    </div>
+    <div class="checkout-summary-column">
+      <section class="checkout-summary" aria-labelledby="summary-title">
+        <div class="checkout-summary-heading"><h2 id="summary-title">Resumo da Confeitaria</h2><span>{{ item_count }} {% if item_count == 1 %}item{% else %}itens{% endif %}</span></div>
+        <div class="checkout-items">
+        {% for item in items %}
+          <article class="checkout-item">
+            {% if item.product.image %}<img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="48" height="48">{% else %}<span class="checkout-item-image material-symbols-outlined" aria-hidden="true">{% if item.product.category.name == 'Cafés' %}local_cafe{% else %}bakery_dining{% endif %}</span>{% endif %}
+            <div><h3>{{ item.product.name }}</h3><p>{{ item.quantity }}x{% for addon in item.addons.all %} · {{ addon.addon.name }}{% endfor %}</p></div>
+            <strong>R$ {{ item.subtotal }}</strong>
+          </article>
+        {% endfor %}
+        </div>
+        <dl class="checkout-totals"><div><dt>Subtotal</dt><dd>R$ {{ totals.subtotal }}</dd></div>{% if totals.discount %}<div class="checkout-discount"><dt>Desconto</dt><dd>- R$ {{ totals.discount }}</dd></div>{% endif %}<div class="checkout-delivery-price"><dt>Entrega especial</dt><dd data-delivery-fee>R$ {{ delivery.fee|floatformat:2 }}</dd></div><div class="checkout-total"><dt>Total do pedido</dt><dd data-checkout-total>R$ {{ delivery.total|floatformat:2 }}</dd></div></dl>
+      </section>
+      <div class="checkout-confirm">
+        <button class="brand-button" type="submit" data-action-state data-pending-label="Confirmando seu pedido..." data-action-icon="receipt_long"><span data-action-label>Confirmar pedido · <span data-confirm-total>R$ {{ delivery.total|floatformat:2 }}</span></span><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></button>
+        <p><span class="material-symbols-outlined" aria-hidden="true">favorite</span>Preparado com dedicação, do nosso café para você.</p>
+      </div>
+    </div>
+  </form>
+  {{ delivery_options|json_script:"checkout-delivery-options" }}
+  {% endif %}
+</main>
+{% endblock %}
+{% block bottom_nav %}{% endblock %}
+{% block extra_js %}<script type="module" src="{% static 'js/modules/checkout.js' %}" defer></script>{% endblock %}

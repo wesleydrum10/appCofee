@@ -1,0 +1,29 @@
+{% extends "layouts/storefront.html" %}
+{% block title %}Produtos | Café & Cupcakes{% endblock %}
+{% block content %}
+<section class="space-y-5">
+  <div>
+    <p class="text-xs font-bold uppercase tracking-[0.2em] text-caramel">Cardápio</p>
+    <h1 class="brand-heading text-[34px] leading-[42px] text-espresso">Produtos</h1>
+    <p class="text-sm leading-6 text-mocha">Pesquise cafés, cupcakes e favoritos da casa.</p>
+  </div>
+  <form class="relative" method="get">
+    <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-dust">search</span>
+    <input name="q" value="{{ query }}" type="search" enterkeyhint="search" placeholder="Buscar produto" class="h-12 w-full rounded-xl border border-latte bg-white pl-12 pr-28 text-sm shadow-warm">
+    <button class="brand-button absolute right-1.5 top-1.5 min-h-9 px-4 py-2 text-sm">Buscar</button>
+  </form>
+  <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+    <a href="{% url 'catalog:product_list' %}" class="brand-chip bg-espresso text-cream">Todos</a>
+    {% for category in categories %}
+      <a href="?categoria={{ category.slug }}" class="brand-chip bg-white">{{ category.name }}</a>
+    {% endfor %}
+  </div>
+  <div class="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    {% for product in products %}
+      {% include "components/product_card.html" %}
+    {% empty %}
+      {% include "components/empty_state.html" with title="Nenhum produto encontrado." description="Tente outro termo ou categoria." %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

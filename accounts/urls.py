@@ -1,0 +1,14 @@
+from django.urls import path
+
+from . import views
+
+app_name = "accounts"
+
+urlpatterns = [
+    path("cadastro/", views.signup, name="signup"),
+    path("login/", views.EmailLoginView.as_view(), name="login"),
+    path("logout/", views.AccountLogoutView.as_view(), name="logout"),
+    path("recuperar-senha/", views.AccountPasswordResetView.as_view(), name="password_reset"),
+    path("", views.profile, name="profile"),
+    path("enderecos/", views.address_list, name="addresses"),
+]

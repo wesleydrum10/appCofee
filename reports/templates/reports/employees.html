@@ -1,0 +1,7 @@
+{% extends "layouts/dashboard.html" %}
+{% block content %}
+<div class="management-title"><h1>Funcionários</h1><a class="management-button" href="{% url 'reports:employee_create' %}"><span class="material-symbols-outlined" aria-hidden="true">person_add</span>Novo funcionário</a></div>
+<div class="management-table"><table><thead><tr><th>Nome</th><th>E-mail</th><th>Cargo</th><th>Acesso</th><th></th></tr></thead><tbody>
+{% for employee in page %}<tr><td>{{ employee.get_full_name|default:'Sem nome' }}</td><td>{{ employee.email }}</td><td>{{ employee.get_role_display }}</td><td>{% if employee.is_active %}Ativo{% else %}Desativado{% endif %}</td><td>{% if not employee.is_superuser or request.user.is_superuser %}<a href="{% url 'reports:employee_edit' employee.pk %}" title="Editar {{ employee }}" aria-label="Editar {{ employee }}"><span class="material-symbols-outlined" aria-hidden="true">edit</span></a>{% endif %}</td></tr>{% empty %}<tr><td colspan="5">Nenhum funcionário cadastrado.</td></tr>{% endfor %}
+</tbody></table></div>{% include 'reports/pagination.html' %}
+{% endblock %}

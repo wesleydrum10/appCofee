@@ -1,0 +1,88 @@
+{% extends "layouts/storefront.html" %}
+{% load static %}
+{% block title %}Início | Café & Cupcakes{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/feedback.css' %}">{% endblock %}
+{% block content %}
+<section class="grid gap-5 py-3 md:grid-cols-[1.05fr_.95fr] md:items-center md:py-8">
+  <div class="space-y-4">
+    <p class="text-xs font-bold uppercase tracking-[0.2em] text-caramel">Cafeteria artesanal</p>
+    <div class="space-y-3">
+      <h1 class="brand-heading text-[34px] leading-[42px] text-espresso md:text-5xl md:leading-[56px]">Escolha, personalize e acompanhe seu pedido.</h1>
+      <p class="max-w-xl text-sm leading-6 text-mocha md:text-base">Uma vitrine quente para cafés especiais, cupcakes autorais, cupons e entrega acompanhada em tempo real.</p>
+    </div>
+    <form action="{% url 'catalog:product_list' %}" class="relative max-w-xl">
+      <span class="material-symbols-outlined pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-dust">search</span>
+      <input name="q" class="h-12 w-full rounded-xl border border-latte bg-white pl-12 pr-14 text-sm text-espresso placeholder:text-dust shadow-warm" placeholder="Buscar cupcakes artesanais, cafés..." type="search">
+      <button class="absolute right-1.5 top-1.5 flex h-9 w-9 items-center justify-center rounded-lg bg-butter text-espresso" aria-label="Buscar">
+        <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+      </button>
+    </form>
+    <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+      <a href="{% url 'catalog:product_list' %}" class="brand-chip bg-espresso text-cream">Todos</a>
+      <a href="{% url 'catalog:product_list' %}?q=cupcake" class="brand-chip bg-white">Cupcakes Gourmet</a>
+      <a href="{% url 'catalog:product_list' %}?q=café" class="brand-chip bg-white">Cafés Especiais</a>
+      <a href="{% url 'catalog:product_list' %}?q=combo" class="brand-chip bg-white">Combos</a>
+    </div>
+    <a href="{% url 'catalog:product_list' %}" class="brand-button gap-2">
+      Ver cardápio
+      <span class="material-symbols-outlined text-[19px]">arrow_forward</span>
+    </a>
+  </div>
+  <div class="brand-card overflow-hidden bg-espresso text-cream">
+    <div class="grid min-h-[280px] content-between gap-5 p-5 md:min-h-[380px] md:p-7">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-[#ffdcc2]">Momento especial</p>
+          <h2 class="brand-heading mt-2 text-3xl leading-9">Combo Tarde Doce</h2>
+          <p class="mt-2 max-w-xs text-sm leading-6 text-[#d8c2bb]">Cappuccino aveludado + cupcake da casa com desconto de fornada.</p>
+        </div>
+        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#ffdcc2] text-[#6d3a00]">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">local_fire_department</span>
+        </span>
+      </div>
+      <div class="grid grid-cols-3 gap-3">
+        <div class="rounded-2xl bg-white/10 p-3 backdrop-blur">
+          <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#d8c2bb]">Até</p>
+          <p class="brand-heading text-2xl text-[#ffdcc2]">18h</p>
+        </div>
+        <div class="rounded-2xl bg-white/10 p-3 backdrop-blur">
+          <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#d8c2bb]">Off</p>
+          <p class="brand-heading text-2xl text-[#ffdcc2]">15%</p>
+        </div>
+        <div class="rounded-2xl bg-white/10 p-3 backdrop-blur">
+          <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-[#d8c2bb]">Preparo</p>
+          <p class="brand-heading text-2xl text-[#ffdcc2]">35m</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="mt-6">
+  <div class="mb-3 flex items-end justify-between gap-3">
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.18em] text-caramel">Favoritos da casa</p>
+      <h2 class="brand-heading text-2xl text-espresso">Novidades</h2>
+    </div>
+    <a href="{% url 'catalog:product_list' %}" class="text-sm font-bold text-caramel">Ver todos</a>
+  </div>
+  <div class="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    {% for product in products %}
+      {% include "components/product_card.html" %}
+    {% empty %}
+      {% include "components/empty_state.html" with title="Nenhum produto cadastrado." description="Rode o seed demonstrativo para começar." %}
+    {% endfor %}
+  </div>
+</section>
+<section class="mt-8" aria-labelledby="store-feedback-title">
+  <div class="feedback-heading">
+    <div>
+      <h2 id="store-feedback-title" class="brand-heading text-2xl">Avaliações da loja</h2>
+      {% if feedback_summary.total %}<span class="feedback-summary"><span class="material-symbols-outlined" aria-hidden="true">star</span><strong>{{ feedback_summary.average|floatformat:1 }}/5</strong> · {{ feedback_summary.total }} {% if feedback_summary.total == 1 %}avaliação{% else %}avaliações{% endif %}</span>{% endif %}
+    </div>
+    <a href="{% url 'reviews:store' %}" class="text-sm font-bold text-caramel">Avaliar a loja</a>
+  </div>
+  <div class="feedback-grid">
+    {% for feedback in feedbacks %}{% include "components/store_feedback.html" %}{% empty %}<p class="text-sm text-dust">Nenhuma avaliação publicada.</p>{% endfor %}
+  </div>
+</section>
+{% endblock %}

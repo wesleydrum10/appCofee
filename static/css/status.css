@@ -1,0 +1,21 @@
+.status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: 6px; font-size: 12px; line-height: 18px; font-weight: 600; background: #eceef0; color: #46505a; vertical-align: middle; max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.status-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.status-badge[data-status=PENDING] { background: #fff0c2; color: #805100; }
+.status-badge[data-status=APPROVED], .status-badge[data-status=CONFIRMED], .status-badge[data-status=DELIVERED] { background: #def3e5; color: #21613b; }
+.status-badge[data-status=DECLINED], .status-badge[data-status=CANCELLED] { background: #fde1e4; color: #a52438; }
+.status-badge[data-status=PREPARING], .status-badge[data-status=PROCESSING] { background: #e0edff; color: #245ba0; }
+.status-badge[data-status=READY] { background: #dcf3f0; color: #14695d; }
+.status-badge[data-status=DISPATCHED] { background: #eee5fa; color: #70459b; }
+.status-badge[data-status=REFUNDED] { background: #eceef0; color: #46505a; }
+.status-badge[data-status=ACTIVE] { background: #def3e5; color: #21613b; }
+.status-badge[data-status=EXPIRED] { background: #fde1e4; color: #a52438; }
+.status-badge[data-status=SCHEDULED], .status-badge[data-status=LIMIT_REACHED] { background: #fff0c2; color: #805100; }
+.order-timeline-entry { border-left: 2px solid #d2c3bf; padding-left: 12px; font-size: 14px; }
+.order-timeline-entry[data-status=DECLINED], .order-timeline-entry[data-status=CANCELLED] { border-color: #d04a5a; }
+.order-timeline-entry[data-status=APPROVED], .order-timeline-entry[data-status=CONFIRMED], .order-timeline-entry[data-status=DELIVERED] { border-color: #3d7b54; }
+.order-timeline-entry[data-status=PENDING] { border-color: #c08b25; }
+.order-timeline-entry[data-status=PREPARING] { border-color: #245ba0; }
+.order-timeline-entry[data-status=READY] { border-color: #14695d; }
+.order-timeline-entry[data-status=DISPATCHED] { border-color: #70459b; }
+.order-timeline-entry[data-status=REFUNDED] { border-color: #64707b; }
+.order-timeline-entry > p { margin-top: 6px; }

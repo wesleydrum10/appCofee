@@ -1,0 +1,81 @@
+.profile-header { position: sticky; top: 0; z-index: 40; background: #fcf9f4f2; backdrop-filter: blur(16px); box-shadow: 0 1px 12px #2b1e1a0d; padding-top: env(safe-area-inset-top); }
+.profile-header nav { display: flex; align-items: center; gap: 4px; max-width: 640px; min-height: 64px; padding: 0 16px; margin: auto; }
+.profile-brand { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0; }
+.profile-brand-mark { display: grid; place-items: center; width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; background: #2b1e1a; color: #fcf9f4; font-size: 20px; }
+.profile-brand > span:last-child { min-width: 0; }
+.profile-brand strong { display: block; font-family: 'Playfair Display', serif; font-size: 20px; line-height: 28px; font-weight: 600; color: #120805; }
+.profile-brand > span > span { display: block; font-size: 10px; line-height: 16px; color: #8b5013; }
+.profile-icon-button { display: inline-grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; border-radius: 50%; color: #4f4542; }
+.profile-icon-button:hover { background: #ebe8e3; }
+.profile-bag { position: relative; }
+.profile-bag > span:last-child { position: absolute; top: 5px; right: 5px; display: grid; place-items: center; height: 18px; min-width: 18px; padding: 0 4px; border-radius: 100px; font-size: 10px; font-weight: 700; background: #feb06b; color: #784102; }
+.profile-page { max-width: 520px; padding: 16px 16px calc(112px + env(safe-area-inset-bottom)); margin: auto; font-size: 14px; line-height: 22px; color: #1c1c19; }
+.profile-identity { display: flex; align-items: center; gap: 16px; padding: 16px; border-radius: 12px; background: #fff; box-shadow: 0 1px 3px #2b1e1a0d; }
+.profile-avatar { display: grid; place-items: center; width: 64px; height: 64px; flex-shrink: 0; border-radius: 50%; background: #f4ece1; color: #8b5013; font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 600; }
+.profile-identity > div { min-width: 0; }
+.profile-name-row { display: flex; align-items: center; gap: 6px; }
+.profile-name-row h1 { font-family: 'Playfair Display', serif; font-size: 20px; line-height: 28px; color: #120805; overflow-wrap: anywhere; }
+.profile-name-row .material-symbols-outlined { color: #8b5013; font-size: 18px; flex-shrink: 0; }
+.profile-identity p { color: #4f4542; font-size: 12px; line-height: 18px; overflow-wrap: anywhere; }
+.profile-member-since { display: flex; align-items: center; gap: 4px; color: #807471; font-size: 11px; line-height: 18px; margin-top: 4px; }
+.profile-member-since .material-symbols-outlined { font-size: 14px; }
+.profile-loyalty { margin-top: 24px; padding: 16px; border-radius: 12px; background: #2b1e1a; color: #fcf9f4; box-shadow: 0 4px 8px #2b1e1a12; }
+.profile-loyalty-heading { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 16px; }
+.profile-loyalty-heading > span:first-child { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 100px; background: #feb06b24; color: #ffdcc2; font-size: 11px; line-height: 18px; font-weight: 700; text-transform: uppercase; }
+.profile-loyalty-heading .material-symbols-outlined { font-size: 15px; }
+.profile-coming-soon { flex-shrink: 0; font-size: 10px; line-height: 16px; color: #807471; }
+.profile-loyalty .profile-coming-soon { color: #d8c2bb; }
+.profile-loyalty h2 { font-family: 'Playfair Display', serif; font-size: 26px; line-height: 34px; margin-bottom: 6px; }
+.profile-loyalty > p { color: #d8c2bb; font-size: 12px; line-height: 18px; }
+.profile-loyalty > button { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 12px 10px; margin-top: 20px; border-radius: 12px; background: #feb06b; color: #784102; font-weight: 600; font-size: 12px; line-height: 18px; cursor: not-allowed; }
+.profile-loyalty > button .material-symbols-outlined { font-size: 20px; flex-shrink: 0; }
+.profile-current-order { padding: 16px; margin-top: 24px; border-radius: 12px; background: #f6f3ee; }
+.profile-order-heading { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.profile-order-heading h2 { display: flex; align-items: center; gap: 6px; font-size: 10px; line-height: 16px; text-transform: uppercase; color: #4f4542; font-weight: 700; }
+.profile-order-heading > span { color: #8b5013; font-size: 11px; line-height: 18px; font-weight: 600; overflow-wrap: anywhere; }
+.profile-status-dot { width: 9px; height: 9px; flex-shrink: 0; border-radius: 50%; background: #feb06b; }
+.profile-order-content { display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 8px; background: #fff; flex-wrap: wrap; }
+.profile-order-content > div { flex: 1; min-width: 100px; }
+.profile-order-content h3 { font-size: 14px; line-height: 20px; font-weight: 600; overflow-wrap: anywhere; }
+.profile-order-content p { font-size: 12px; line-height: 18px; color: #4f4542; }
+.profile-order-content p strong { color: #8b5013; font-weight: 500; }
+.profile-order-content a { display: flex; align-items: center; gap: 4px; background: #120805; color: #fff; border-radius: 8px; padding: 8px 10px; font-size: 11px; line-height: 18px; flex-shrink: 0; }
+.profile-order-content a .material-symbols-outlined { font-size: 15px; }
+.profile-menu { margin-top: 24px; }
+.profile-menu > h2 { color: #4f4542; font-size: 11px; line-height: 18px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; padding: 0 4px; }
+.profile-menu-row { display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 12px; background: #fff; box-shadow: 0 1px 3px #2b1e1a0d; width: 100%; text-align: left; min-width: 0; }
+.profile-menu > .profile-menu-row, .profile-personal-details { margin-bottom: 8px; }
+a.profile-menu-row:hover, button.profile-menu-row:hover, summary.profile-menu-row:hover { background: #f0ede9; }
+.profile-menu-icon { display: grid; place-items: center; width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; background: #f0ede9; color: #2b1e1a; font-size: 22px; }
+.profile-menu-copy { flex: 1; min-width: 0; }
+.profile-menu-copy strong, .profile-menu-title { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-weight: 600; font-size: 16px; line-height: 24px; color: #120805; }
+.profile-menu-copy > span:last-child { display: block; font-size: 12px; line-height: 18px; color: #4f4542; margin-top: 2px; overflow-wrap: anywhere; }
+.profile-count { border-radius: 100px; padding: 2px 8px; background: #feb06b; color: #784102; font-size: 10px; line-height: 16px; font-weight: 700; }
+.profile-chevron { flex-shrink: 0; font-size: 22px; color: #d2c3bf; }
+.profile-unavailable { background: #f6f3ee; }
+.profile-personal-details summary { list-style: none; cursor: pointer; }
+.profile-personal-details summary::-webkit-details-marker { display: none; }
+.profile-personal-details[open] { border-radius: 12px; background: #fff; }
+.profile-personal-content { padding: 0 16px 16px; }
+.profile-personal-content dl > div { padding: 8px 0; border-top: 1px solid #f0ede9; }
+.profile-personal-content dt { color: #807471; font-size: 11px; line-height: 18px; }
+.profile-personal-content dd { overflow-wrap: anywhere; }
+.profile-personal-content a { display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; color: #8b5013; font-weight: 600; min-height: 44px; }
+.profile-personal-content a .material-symbols-outlined { font-size: 20px; }
+.profile-logout { margin-top: 24px; border: 1px solid #d2c3bf66; cursor: pointer; }
+.profile-logout .profile-menu-icon { background: #ffdad64d; color: #ba1a1a; }
+.profile-session { font-size: 10px; line-height: 16px; color: #4f4542; background: #f0ede9; border-radius: 100px; padding: 2px 8px; font-weight: 400; }
+.profile-footer { text-align: center; margin-top: 24px; font-size: 11px; line-height: 18px; color: #a99a95; }
+.profile-logout-dialog { width: min(384px, calc(100% - 32px)); max-height: calc(100dvh - 32px); overflow: auto; margin: auto; border: 1px solid #d2c3bf4d; border-radius: 12px; padding: 24px; color: #2b1e1a; background: #fff; box-shadow: 0 16px 48px #2b1e1a33; }
+.profile-logout-dialog::backdrop { background: #12080566; backdrop-filter: blur(3px); }
+.profile-dialog-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.profile-dialog-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: #feb06b33; color: #8b5013; font-size: 28px; }
+.profile-dialog-eyebrow { color: #8b5013; text-transform: uppercase; font-size: 11px; line-height: 18px; font-weight: 700; margin-bottom: 6px; }
+.profile-logout-dialog h2 { font-family: 'Playfair Display', serif; font-size: 22px; line-height: 30px; font-weight: 600; margin-bottom: 8px; overflow-wrap: anywhere; }
+.profile-logout-dialog #logout-description { font-size: 14px; line-height: 22px; color: #4f4542; }
+.profile-logout-dialog form { margin-top: 20px; }
+.profile-logout-dialog .brand-button, .profile-logout-dialog .brand-button-secondary { width: 100%; gap: 6px; font-size: 14px; }
+.profile-logout-dialog > .brand-button-secondary { margin-top: 8px; }
+.profile-page :is(a, button, summary):focus-visible { outline: 2px solid #8b5013; outline-offset: 3px; }
+@media (max-width: 359px) { .profile-brand strong { font-size: 18px; } .profile-brand > span > span { font-size: 9px; } .profile-brand-mark { width: 32px; height: 32px; } .profile-menu-row { padding: 12px; gap: 8px; } .profile-menu-copy strong, .profile-menu-title { font-size: 14px; line-height: 20px; } .profile-loyalty h2 { font-size: 24px; line-height: 32px; } }
+@media (max-width: 639px) { .profile-logout-dialog { margin: auto auto 16px; } }

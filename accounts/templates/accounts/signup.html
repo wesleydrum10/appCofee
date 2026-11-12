@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Criar conta | Veludo & Grão{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<link rel="stylesheet" href="{% static 'css/signup.css' %}">
+{% endblock %}
+{% block main %}
+<main class="login-page signup-page">
+  {% include "components/alert.html" %}
+  <header class="signup-intro">
+    <span class="signup-brand-icon material-symbols-outlined" aria-hidden="true">local_cafe</span>
+    <p class="signup-eyebrow">Bem-vindo ao Veludo &amp; Grão</p>
+    <h1>Criar minha conta</h1>
+    <p>Seu próximo momento de doçura começa aqui.</p>
+  </header>
+  <form method="post" id="signup-form" class="login-form">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="login-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    {% for field in form %}
+    <div class="login-field">
+      <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.name == 'first_name' %}<span>Obrigatório</span>{% endif %}</label>
+      <div class="login-input-wrap">
+        <span class="material-symbols-outlined login-field-icon" aria-hidden="true">{% if field.name == 'first_name' %}person{% elif field.name == 'email' %}mail{% elif field.name == 'cpf' %}badge{% else %}lock{% endif %}</span>
+        {{ field }}
+        {% if field.name == 'password1' or field.name == 'password2' %}
+        <button class="login-icon-button login-password-toggle" type="button" data-password-toggle="{{ field.id_for_label }}" aria-controls="{{ field.id_for_label }}" aria-label="Mostrar {{ field.label|lower }}" aria-pressed="false"><span class="material-symbols-outlined" aria-hidden="true">visibility</span></button>
+        {% endif %}
+      </div>
+      {% if field.errors %}<div class="login-errors" id="{{ field.auto_id }}_errors" role="alert">{{ field.errors }}</div>{% endif %}
+      {% if field.help_text %}
+        {% if field.name == 'password1' %}
+        <details class="signup-password-help" {% if field.errors %}open{% endif %}>
+          <summary>Orientações para uma senha segura</summary>
+          <div id="{{ field.auto_id }}_helptext">{{ field.help_text|safe }}</div>
+        </details>
+        {% else %}<p class="signup-field-help" id="{{ field.auto_id }}_helptext">{{ field.help_text|safe }}</p>{% endif %}
+      {% endif %}
+    </div>
+    {% endfor %}
+    <button class="login-submit" type="submit" data-action-state data-pending-label="Criando sua conta..." data-action-icon="person_add"><span id="signup-submit-label" data-action-label>Criar minha conta</span><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></button>
+  </form>
+  <p class="signup-login-link">Já tem conta? <a href="{% url 'accounts:login' %}">Entrar <span class="material-symbols-outlined" aria-hidden="true">login</span></a></p>
+  <footer class="login-trust"><span class="material-symbols-outlined" aria-hidden="true">verified_user</span><span>Veludo &amp; Grão Club</span></footer>
+</main>
+{% endblock %}
+{% block bottom_nav %}{% endblock %}
+{% block extra_js %}<script type="module" src="{% static 'js/modules/signup.js' %}" defer></script>{% endblock %}

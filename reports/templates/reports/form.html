@@ -1,0 +1,12 @@
+{% extends "layouts/dashboard.html" %}
+{% block content %}
+<div class="management-title"><h1>{{ title }}</h1><a href="{% url back %}" title="Voltar" aria-label="Voltar"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span></a></div>
+<form method="post" enctype="multipart/form-data" class="management-form">{% csrf_token %}
+  {{ form.non_field_errors }}
+  {% for field in form %}<div class="management-field {% if field.field.widget.input_type == 'checkbox' %}checkbox-field{% endif %}">
+    {% if field.field.widget.input_type == 'checkbox' %}{{ field }}{{ field.label_tag }}{% else %}{{ field.label_tag }}{{ field }}{% endif %}
+    {{ field.errors }}
+  </div>{% endfor %}
+  <div class="management-actions"><button class="management-button" type="submit"><span class="material-symbols-outlined" aria-hidden="true">save</span>Salvar</button><a href="{% url back %}">Cancelar</a></div>
+</form>
+{% endblock %}

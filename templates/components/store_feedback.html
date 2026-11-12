@@ -1,0 +1,10 @@
+<article class="feedback-item">
+  <header class="feedback-item-header">
+    <strong>{{ feedback.public_name }}</strong>
+    <time datetime="{{ feedback.created_at|date:'c' }}">{{ feedback.created_at|date:"d/m/Y" }}</time>
+  </header>
+  <div class="feedback-stars" aria-label="{{ feedback.rating }} de 5 estrelas">
+    {% for star in "12345" %}<span class="material-symbols-outlined {% if forloop.counter <= feedback.rating %}filled{% endif %}" aria-hidden="true">star</span>{% endfor %}
+  </div>
+  <p>{{ feedback.comment|linebreaksbr }}</p>
+</article>

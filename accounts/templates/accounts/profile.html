@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Minha conta | Veludo & Grão{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/profile.css' %}">{% endblock %}
+{% block header %}
+<header class="profile-header"><nav aria-label="Navegação">
+  <a href="{% url 'core:home' %}" class="profile-brand"><span class="profile-brand-mark material-symbols-outlined" aria-hidden="true">local_cafe</span><span><strong>Veludo &amp; Grão</strong><span>Minha conta · Veludo &amp; Grão</span></span></a>
+  <a class="profile-icon-button" href="{% url 'catalog:product_list' %}" aria-label="Buscar no cardápio"><span class="material-symbols-outlined" aria-hidden="true">search</span></a>
+  <a class="profile-icon-button profile-bag" href="{% url 'cart:detail' %}" aria-label="Sacola, {{ cart_item_count|default:0 }} itens"><span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span><span>{{ cart_item_count|default:0 }}</span></a>
+</nav></header>
+{% endblock %}
+{% block main %}
+<main class="profile-page">
+  {% include "components/alert.html" %}
+  <section class="profile-identity" aria-labelledby="profile-name">
+    <span class="profile-avatar" aria-hidden="true">{{ request.user.first_name|first|default:request.user.email|first|upper }}</span>
+    <div><div class="profile-name-row"><h1 id="profile-name">{{ request.user.get_full_name|default:request.user.email }}</h1>{% if request.user.email_confirmed %}<span class="material-symbols-outlined" title="E-mail confirmado" aria-label="E-mail confirmado">verified</span>{% endif %}</div><p>{{ request.user.email }}</p><span class="profile-member-since"><span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>Cliente desde {{ request.user.created_at|date:"m/Y" }}</span></div>
+  </section>
+  <section class="profile-loyalty" aria-labelledby="loyalty-title">
+    <div class="profile-loyalty-heading"><span><span class="material-symbols-outlined" aria-hidden="true">stars</span>Clube Veludo</span><span class="profile-coming-soon">Em breve</span></div>
+    <h2 id="loyalty-title">Seus momentos merecem um mimo.</h2>
+    <p>Programa de fidelidade e recompensas</p>
+    <button type="button" disabled><span class="material-symbols-outlined" aria-hidden="true">local_cafe</span>Resgatar cupcake ou café especial</button>
+  </section>
+  {% if current_order %}
+  <section class="profile-current-order" aria-labelledby="current-order-title">
+    <div class="profile-order-heading"><h2 id="current-order-title"><span class="profile-status-dot" aria-hidden="true"></span>Último pedido em andamento</h2><span>{{ current_order.number }}</span></div>
+    <div class="profile-order-content"><span class="profile-menu-icon material-symbols-outlined" aria-hidden="true">bakery_dining</span><div><h3>{% if current_order_item %}{{ current_order_item.quantity }}x {{ current_order_item.product_name }}{% else %}Seu pedido{% endif %}</h3><p>Status: <strong>{{ current_order.get_status_display }}</strong></p></div><a href="{% url 'orders:detail' current_order.number %}">Acompanhar<span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a></div>
+  </section>
+  {% endif %}
+  <section class="profile-menu" aria-labelledby="menu-title">
+    <h2 id="menu-title">Menu da Cafeteria &amp; Preferências</h2>
+    <a class="profile-menu-row" href="{% url 'reviews:store' %}"><span class="profile-menu-icon material-symbols-outlined" aria-hidden="true">rate_review</span><span class="profile-menu-copy"><strong>Avaliações da loja</strong></span><span class="profile-chevron material-symbols-outlined" aria-hidden="true">chevron_right</span></a>
+    <a class="profile-menu-row" href="{% url 'orders:list' %}"><span class="profile-menu-icon material-symbols-outlined" aria-hidden="true">receipt_long</span><span class="profile-menu-copy"><span class="profile-menu-title">Meus pedidos{% if active_order_count %}<span class="profile-count">{{ active_order_count }} em andamento</span>{% endif %}</span><span>Histórico completo de fornadas e cafés</span></span><span class="profile-chevron material-symbols-outlined" aria-hidden="true">chevron_right</span></a>
+    <a class="profile-menu-row" href="{% url 'accounts:addresses' %}"><span class="profile-menu-icon material-symbols-outlined" aria-hidden="true">location_on</span><span class="profile-menu-copy"><strong>Endereços salvos</strong><span>{% if primary_address %}{{ primary_address.street }}, {{ primary_address.number }} · {{ primary_address.label }}{% else %}Cadastre seu endereço de entrega{% endif %}</span></span><span class="profile-chevron material-symbols-outlined" aria-hidden="true">chevron_right</span></a>
+    <a class="profile-menu-row" href="{% url 'orders:checkout' %}"><span class="profile-menu-icon material-symbols-outlined" aria-hidden="true">credit_card</span><span class="profile-menu-copy"><strong>Formas de pagamento</strong><span>Pix, cartão e dinheiro</span></span><span class="profile-chevron material-symbols-outlined" aria-hidden="true">chevron_right</span></a>
+    {% if request.user.is_manager %}<a class="profile-menu-row" href="{% url 'reports:dashboard' %}"><span class="profile-menu-icon material-symbols-outlined" aria-hidden="true">dashboard</span><span class="profile-menu-copy"><strong>Gestão do empreendimento</strong></span><span class="profile-chevron material-symbols-outlined" aria-hidden="true">chevron_right</span></a>{% endif %}
+    <details class="profile-personal-details">
+      <summary class="profile-menu-row"><span class="profile-menu-icon material-symbols-outlined" aria-hidden="true">badge</span><span class="profile-menu-copy"><strong>Dados pessoais e segurança</strong><span>Informações da conta e acesso</span></span><span class="profile-chevron material-symbols-outlined" aria-hidden="true">expand_more</span></summary>
+      <div class="profile-personal-content"><dl><div><dt>Nome</dt><dd>{{ request.user.get_full_name|default:"Não informado" }}</dd></div><div><dt>E-mail</dt><dd>{{ request.user.email }}</dd></div><div><dt>CPF</dt><dd>{% if request.user.cpf %}•••.•••.•••-{{ request.user.cpf|slice:"-2:" }}{% else %}Não informado{% endif %}</dd></div></dl><a href="{% url 'accounts:password_reset' %}"><span class="material-symbols-outlined" aria-hidden="true">lock_reset</span>Recuperar senha</a></div>
+    </details>
+    <div class="profile-menu-row profile-unavailable"><span class="profile-menu-icon material-symbols-outlined" aria-hidden="true">eco</span><span class="profile-menu-copy"><strong>Preferências e alérgenos</strong><span>Preferências alimentares</span></span><span class="profile-coming-soon">Em breve</span></div>
+    <div class="profile-menu-row profile-unavailable"><span class="profile-menu-icon material-symbols-outlined" aria-hidden="true">notifications_active</span><span class="profile-menu-copy"><strong>Notificações &amp; Fornadas</strong><span>Alertas de novidades da cafeteria</span></span><span class="profile-coming-soon">Em breve</span></div>
+  </section>
+  <button class="profile-menu-row profile-logout" type="button" id="open-logout"><span class="profile-menu-icon material-symbols-outlined" aria-hidden="true">logout</span><span class="profile-menu-copy"><span class="profile-menu-title">Sair da conta<span class="profile-session">Sessão ativa</span></span><span>Encerrar sessão com segurança</span></span><span class="profile-chevron material-symbols-outlined" aria-hidden="true">chevron_right</span></button>
+  <p class="profile-footer">Veludo &amp; Grão</p>
+  <dialog id="logout-dialog" class="profile-logout-dialog" aria-labelledby="logout-title" aria-describedby="logout-description">
+    <div class="profile-dialog-heading"><span class="profile-dialog-icon material-symbols-outlined" aria-hidden="true">door_open</span><button class="profile-icon-button" type="button" data-close-logout aria-label="Fechar confirmação"><span class="material-symbols-outlined" aria-hidden="true">close</span></button></div>
+    <p class="profile-dialog-eyebrow">Confirmação de sessão</p><h2 id="logout-title">Deseja mesmo sair da sua conta{% if request.user.first_name %}, {{ request.user.first_name }}{% endif %}?</h2><p id="logout-description">Seus pedidos e endereços continuarão salvos para o seu próximo café conosco.</p>
+    <form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="brand-button" type="submit" data-action-state data-pending-label="Encerrando sua sessão..." data-action-icon="logout"><span class="material-symbols-outlined" aria-hidden="true">logout</span>Sair da conta</button></form>
+    <button class="brand-button-secondary" type="button" data-close-logout>Continuar na conta</button>
+  </dialog>
+</main>
+{% endblock %}
+{% block extra_js %}<script type="module" src="{% static 'js/modules/profile.js' %}" defer></script>{% endblock %}

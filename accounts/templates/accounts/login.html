@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Login | Veludo & Grão{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/login.css' %}">{% endblock %}
+{% block header %}
+<header class="login-header">
+  <nav class="login-header-inner" aria-label="Navegação">
+    <a class="login-icon-button" href="{% url 'catalog:product_list' %}" aria-label="Voltar"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span></a>
+    <h1>Login <span>Veludo &amp; Grão</span></h1>
+    <a class="login-icon-button" href="{% url 'core:home' %}" aria-label="Início"><span class="material-symbols-outlined" aria-hidden="true">home</span></a>
+    <a class="login-icon-button login-bag" href="{% url 'cart:detail' %}" aria-label="Sacola, {{ cart_item_count|default:0 }} itens"><span class="material-symbols-outlined" aria-hidden="true">shopping_bag</span><span class="login-count">{{ cart_item_count|default:0 }}</span></a>
+  </nav>
+</header>
+{% endblock %}
+{% block main %}
+<main class="login-page">
+  {% include "components/alert.html" %}
+  <section class="login-welcome" aria-labelledby="welcome-title">
+    <div class="login-photo">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSkntsoR3LFHQZg2J3HQ0I8cqJvPbHTyN2MGJ4xQuM2V9MAHa17ZSga5j-FYirA0EMH2_GzVcPIEKf-kzSHP2tQCjyaKtqzHfW24LohezpXnrOHdCXBE9Co3_y1tDmSdf6OYWzHrI8-UdNMtzgJKm0PbfxraKy9CUAmF1VdessbtXGtoq1wnhCwn36cu3llqYOl8kkrTo-hZbPk-_WwC0nQz4mcGf2PGtfsU-Cyig" alt="Café artesanal acompanhado de um cupcake" width="640" height="240" fetchpriority="high">
+      <span class="login-photo-label"><span class="material-symbols-outlined" aria-hidden="true">local_cafe</span> Confeitaria &amp; Cafés Especiais</span>
+    </div>
+    <div class="login-welcome-copy">
+      <h2 id="welcome-title">Que bom te ver de novo</h2>
+      <p>Entre para saborear suas delícias favoritas e acompanhar seus pedidos em tempo real.</p>
+    </div>
+  </section>
+  <form method="post" id="login-form" class="login-form">
+    {% csrf_token %}
+    {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+    {% if form.non_field_errors %}<div class="login-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    <div class="login-field">
+      <label for="id_username">E-mail <span>Obrigatório</span></label>
+      <div class="login-input-wrap">
+        <span class="material-symbols-outlined login-field-icon" aria-hidden="true">mail</span>
+        <input id="id_username" name="username" type="email" value="{{ form.username.value|default_if_none:'' }}" placeholder="seu.email@exemplo.com" autocomplete="email" required {% if form.username.errors %}aria-invalid="true" aria-describedby="email-errors"{% endif %}>
+      </div>
+      {% if form.username.errors %}<div class="login-errors" id="email-errors">{{ form.username.errors }}</div>{% endif %}
+    </div>
+    <div class="login-field">
+      <div class="login-password-label"><label for="id_password">Senha</label><a href="{% url 'accounts:password_reset' %}">Esqueci minha senha</a></div>
+      <div class="login-input-wrap">
+        <span class="material-symbols-outlined login-field-icon" aria-hidden="true">lock</span>
+        <input id="id_password" name="password" type="password" placeholder="Sua senha" autocomplete="current-password" required {% if form.password.errors %}aria-invalid="true" aria-describedby="password-errors"{% endif %}>
+        <button class="login-icon-button login-password-toggle" type="button" id="toggle-password" aria-label="Mostrar senha" aria-pressed="false" aria-controls="id_password"><span class="material-symbols-outlined" aria-hidden="true">visibility</span></button>
+      </div>
+      {% if form.password.errors %}<div class="login-errors" id="password-errors">{{ form.password.errors }}</div>{% endif %}
+    </div>
+    <label class="login-remember"><input name="remember_me" type="checkbox" {% if request.method != 'POST' or request.POST.remember_me %}checked{% endif %}> <span>Lembrar de mim neste dispositivo</span></label>
+    <button class="login-submit" type="submit" data-action-state data-pending-label="Entrando na sua conta..." data-action-icon="login"><span id="login-submit-label" data-action-label>Entrar na Minha Conta</span><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></button>
+  </form>
+  <div class="login-divider"><span>ou acesse com</span></div>
+  <div class="login-social">
+    <button type="button" disabled title="Acesso com Google ainda indisponível"><img src="https://www.gstatic.com/images/branding/googleg/1x/googleg_standard_color_128dp.png" alt="" width="20" height="20">Continuar com Google<span class="login-soon">Em breve</span></button>
+    <button type="button" disabled title="Acesso por SMS ainda indisponível"><span class="material-symbols-outlined" aria-hidden="true">sms</span>Acesso Rápido com Código SMS<span class="login-soon">Em breve</span></button>
+  </div>
+  <section class="login-signup" aria-labelledby="signup-title">
+    <span class="login-membership material-symbols-outlined" aria-hidden="true">card_membership</span>
+    <h2 id="signup-title">Ainda não faz parte do clube?</h2>
+    <p>Cadastre-se para saborear suas delícias favoritas e acompanhar seus pedidos.</p>
+    <a href="{% url 'accounts:signup' %}">Criar minha conta <span class="material-symbols-outlined" aria-hidden="true">badge</span></a>
+  </section>
+  <footer class="login-trust"><span class="material-symbols-outlined" aria-hidden="true">verified_user</span><span>Veludo &amp; Grão Club</span></footer>
+</main>
+{% endblock %}
+{% block bottom_nav %}{% endblock %}
+{% block extra_js %}<script type="module" src="{% static 'js/modules/login.js' %}" defer></script>{% endblock %}

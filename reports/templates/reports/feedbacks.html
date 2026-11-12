@@ -1,0 +1,12 @@
+{% extends "layouts/dashboard.html" %}
+{% block content %}
+<div class="management-title"><h1>Feedbacks da loja</h1><a class="management-button secondary" href="{% url 'reviews:store' %}"><span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>Ver no site</a></div>
+<div class="management-table"><table><thead><tr><th>Cliente</th><th>Nota</th><th>Comentário</th><th>Data</th><th>Situação</th><th></th></tr></thead><tbody>
+{% for feedback in page %}<tr>
+  <td>{{ feedback.user }}</td><td>{{ feedback.rating }}/5</td>
+  <td class="feedback-comment-cell">{{ feedback.comment|linebreaksbr }}</td><td>{{ feedback.created_at|date:"d/m/Y H:i" }}</td>
+  <td>{% if feedback.is_public %}{% include "components/status_badge.html" with status="Publicado" status_code="ACTIVE" only %}{% else %}{% include "components/status_badge.html" with status="Oculto" status_code="INACTIVE" only %}{% endif %}</td>
+  <td><form method="post" action="{% url 'reports:feedback_visibility' feedback.pk %}">{% csrf_token %}<input type="hidden" name="is_public" value="{% if feedback.is_public %}0{% else %}1{% endif %}"><button type="submit" title="{% if feedback.is_public %}Ocultar{% else %}Publicar{% endif %} feedback" aria-label="{% if feedback.is_public %}Ocultar{% else %}Publicar{% endif %} feedback de {{ feedback.public_name }}"><span class="material-symbols-outlined" aria-hidden="true">{% if feedback.is_public %}visibility_off{% else %}visibility{% endif %}</span></button></form></td>
+</tr>{% empty %}<tr><td colspan="6">Nenhum feedback cadastrado.</td></tr>{% endfor %}
+</tbody></table></div>{% include "reports/pagination.html" %}
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "layouts/storefront.html" %}
+{% block title %}{{ product.name }} | Café & Cupcakes{% endblock %}
+{% block content %}
+<article class="space-y-5 md:grid md:grid-cols-2 md:gap-8 md:space-y-0">
+  <div class="aspect-square overflow-hidden rounded-2xl border border-latte bg-butter shadow-warm">
+    {% if product.image %}
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" class="h-full w-full object-cover">
+    {% else %}
+      <div class="flex h-full items-center justify-center text-sm font-semibold text-dust">Imagem do produto</div>
+    {% endif %}
+  </div>
+  <div class="space-y-4">
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.18em] text-caramel">{{ product.category.name }}</p>
+      <h1 class="brand-heading mt-1 text-[34px] leading-[42px] text-espresso md:text-5xl md:leading-[56px]">{{ product.name }}</h1>
+      <p class="brand-price mt-2 text-2xl">R$ {{ product.price }}</p>
+    </div>
+    <p class="text-sm leading-6 text-mocha">{{ product.description }}</p>
+    <section>
+      <h2 class="text-sm font-bold text-espresso">Ingredientes</h2>
+      <p class="mt-1 text-sm leading-6 text-dust">{% for ingredient in product.ingredients.all %}{{ ingredient.name }}{% if not forloop.last %}, {% endif %}{% empty %}Não informado.{% endfor %}</p>
+    </section>
+    <section>
+      <h2 class="text-sm font-bold text-espresso">Alérgenos</h2>
+      <div class="mt-2 flex flex-wrap gap-2">
+        {% for allergen in product.allergens.all %}
+          <span class="rounded-full {% if allergen.is_highlighted %}bg-[#fbf1e6] text-caramel{% else %}bg-[#eaf2ed] text-sage{% endif %} px-2.5 py-1 text-xs font-bold">{{ allergen.name }}</span>
+        {% empty %}
+          <span class="text-sm text-dust">Não informado.</span>
+        {% endfor %}
+      </div>
+    </section>
+    <form method="post" action="{% url 'cart:add' product.id %}" data-product-customizer class="brand-card space-y-4 p-4">
+      {% csrf_token %}
+      <section>
+        <h2 class="text-sm font-bold text-espresso">Personalizar</h2>
+        <div class="mt-2 space-y-2">
+          {% for addon in product.addons.all %}
+            <label class="flex min-h-12 items-center justify-between gap-3 rounded-xl border border-latte bg-alabaster px-3 py-2 text-sm">
+              <span class="font-semibold text-mocha">{{ addon.name }} <span class="text-caramel">R$ {{ addon.price }}</span></span>
+              <input type="checkbox" name="addons" value="{{ addon.id }}" data-addon-price="{{ addon.price }}" class="h-5 w-5 accent-espresso">
+            </label>
+          {% empty %}
+            <p class="text-sm text-dust">Sem adicionais para este produto.</p>
+          {% endfor %}
+        </div>
+      </section>
+      <label class="block text-sm font-bold text-espresso">Quantidade
+        <input name="quantity" value="1" type="number" min="1" max="50" inputmode="numeric" class="mt-1 h-12 w-full rounded-xl border border-latte px-3">
+      </label>
+      <div class="flex items-center justify-between text-sm">
+        <span class="font-bold uppercase tracking-[0.16em] text-dust">Total</span>
+        <strong class="brand-price" data-product-total data-base-price="{{ product.price }}">R$ {{ product.price }}</strong>
+      </div>
+      <button class="brand-button w-full gap-2 text-sm" data-action-state data-idle-label="Adicionar ao carrinho" data-pending-label="Adicionando..." data-success-label="Adicionado">
+        <span class="material-symbols-outlined text-[19px]">shopping_bag</span>
+        Adicionar ao carrinho
+      </button>
+    </form>
+  </div>
+</article>
+{% endblock %}

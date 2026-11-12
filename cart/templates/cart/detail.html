@@ -1,0 +1,81 @@
+{% extends "layouts/storefront.html" %}
+{% load static %}
+{% block title %}Carrinho | Café & Cupcakes{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/cart.css' %}">{% endblock %}
+{% block content %}
+<section class="space-y-5" data-cart-page>
+  <div class="flex items-start justify-between gap-3">
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.2em] text-caramel">Meu pedido</p>
+      <h1 class="brand-heading text-[34px] leading-[42px] text-espresso">Sua sacola de delícias</h1>
+    </div>
+    {% if cart.items.exists %}
+      <form method="post" action="{% url 'cart:clear' %}">{% csrf_token %}<button class="brand-button-secondary min-h-10 px-3 py-2 text-sm" data-action-state data-pending-label="Esvaziando sacola..." data-action-icon="shopping_bag">Esvaziar</button></form>
+    {% endif %}
+  </div>
+  {% if cart.items.exists %}
+    <div class="flex items-center gap-3 rounded-2xl bg-butter p-3 text-sm text-mocha">
+      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#ffdcc2] text-[#6d3a00]">
+        <span class="material-symbols-outlined text-[21px]" style="font-variation-settings:'FILL' 1;">eco</span>
+      </span>
+      <p>Preparo artesanal fresco garantido para os itens desta sacola.</p>
+    </div>
+  {% endif %}
+  <div class="space-y-3">
+    {% for item in cart.items.all %}
+      <article class="brand-card p-4" data-cart-item="{{ item.pk }}">
+        <div class="cart-item-content">
+          <div class="min-w-0">
+            <h2 class="truncate text-base font-bold text-espresso">{{ item.product.name }}</h2>
+            {% for addon in item.addons.all %}<p class="text-xs leading-5 text-dust">+ {{ addon.addon.name }}</p>{% endfor %}
+            <p class="brand-price mt-1" data-item-subtotal>R$ {{ item.subtotal }}</p>
+          </div>
+          <form method="post" action="{% url 'cart:update' item.id %}" class="cart-quantity-form" data-cart-quantity-form>
+            {% csrf_token %}
+            <button type="submit" name="delta" value="-1" title="Remover uma unidade" aria-label="Remover uma unidade de {{ item.product.name }}"><span class="material-symbols-outlined" aria-hidden="true">remove</span></button>
+            <input name="quantity" value="{{ item.quantity }}" type="number" min="0" max="50" step="1" aria-label="Quantidade de {{ item.product.name }}">
+            <button type="submit" name="delta" value="1" title="Adicionar uma unidade" aria-label="Adicionar uma unidade de {{ item.product.name }}"><span class="material-symbols-outlined" aria-hidden="true">add</span></button>
+            <button type="submit" name="remove" value="1" title="Remover produto" aria-label="Remover {{ item.product.name }} da sacola"><span class="material-symbols-outlined" aria-hidden="true">delete</span></button>
+          </form>
+        </div>
+      </article>
+    {% empty %}
+      {% include "components/empty_state.html" with title="Seu carrinho está vazio." description="Escolha um café ou cupcake para começar." %}
+    {% endfor %}
+  </div>
+  <p class="cart-feedback" data-cart-feedback role="status" aria-live="polite" hidden></p>
+  {% if cart.items.exists %}
+    <form method="post" action="{% url 'cart:apply_coupon' %}" class="brand-card space-y-3 bg-butter p-4">
+      {% csrf_token %}
+      <div class="flex items-center justify-between gap-3">
+        <label class="flex items-center gap-2 text-sm font-bold text-espresso">
+          <span class="material-symbols-outlined text-[19px] text-caramel">confirmation_number</span>
+          Cupom de experiência
+        </label>
+        <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-dust">1 por pedido</span>
+      </div>
+      <div class="flex gap-2">
+        <input name="code" class="h-12 w-full rounded-xl border border-latte bg-white px-3 text-sm font-bold uppercase tracking-[0.12em]" placeholder="CUPOM10">
+        <button class="brand-button h-12 min-h-12 px-4 text-sm" data-action-state data-idle-label="Aplicar" data-pending-label="Validando..." data-success-label="Aplicado">Aplicar</button>
+      </div>
+      <p class="rounded-xl bg-[#eaf2ed] px-3 py-2 text-sm font-semibold text-sage" data-cart-coupon-message {% if not totals.coupon_message %}hidden{% endif %}>{{ totals.coupon_message }}</p>
+    </form>
+    <div class="brand-card space-y-3 p-4 text-sm">
+      <h2 class="text-base font-bold text-espresso">Resumo do pedido</h2>
+      <div class="flex justify-between text-mocha"><span>Subtotal dos itens</span><strong class="text-espresso" data-cart-subtotal>R$ {{ totals.subtotal }}</strong></div>
+      <div class="flex justify-between text-sage"><span>Desconto</span><strong data-cart-discount>R$ {{ totals.discount }}</strong></div>
+      <div class="rounded-xl bg-butter p-3">
+        <div class="flex items-baseline justify-between">
+          <span class="text-xs font-bold uppercase tracking-[0.16em] text-caramel">Total final</span>
+          <strong class="brand-heading text-2xl text-espresso" data-cart-total>R$ {{ totals.total }}</strong>
+        </div>
+      </div>
+      <a href="{% url 'orders:checkout' %}" class="brand-button mt-2 w-full gap-2" data-cart-checkout>
+        Continuar para entrega e pagamento
+        <span class="material-symbols-outlined text-[19px]">arrow_forward</span>
+      </a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}
+{% block extra_js %}<script type="module" src="{% static 'js/modules/cart.js' %}" defer></script>{% endblock %}

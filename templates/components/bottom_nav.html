@@ -1,0 +1,24 @@
+<nav class="fixed inset-x-0 bottom-0 z-40 border-t border-latte bg-alabaster/95 shadow-dock backdrop-blur-xl md:hidden safe-bottom">
+  <div class="grid grid-cols-5 text-[10px] font-bold uppercase tracking-[0.08em] text-dust">
+    <a class="flex min-h-16 flex-col items-center justify-center gap-1 {% if request.resolver_match.app_name == 'core' %}text-espresso{% endif %}" href="{% url 'core:home' %}">
+      <span class="material-symbols-outlined text-[22px]">home</span>
+      Início
+    </a>
+    <a class="flex min-h-16 flex-col items-center justify-center gap-1 {% if request.resolver_match.app_name == 'catalog' %}text-espresso{% endif %}" href="{% url 'catalog:product_list' %}">
+      <span class="material-symbols-outlined text-[22px]">restaurant_menu</span>
+      Produtos
+    </a>
+    <a class="flex min-h-16 flex-col items-center justify-center gap-1 {% if request.resolver_match.app_name == 'orders' %}text-espresso{% endif %}" href="{% url 'orders:list' %}">
+      <span class="material-symbols-outlined text-[22px]">receipt_long</span>
+      Pedidos
+    </a>
+    <a class="flex min-h-16 flex-col items-center justify-center gap-1 {% if request.resolver_match.app_name == 'cart' %}text-espresso{% endif %}" href="{% url 'cart:detail' %}">
+      <span class="material-symbols-outlined text-[22px]">shopping_bag</span>
+      Carrinho
+    </a>
+    <a class="flex min-h-16 flex-col items-center justify-center gap-1 {% if request.resolver_match.app_name == 'accounts' %}text-espresso{% endif %}" href="{% url 'accounts:profile' %}">
+      <span class="material-symbols-outlined text-[22px]">person</span>
+      Conta
+    </a>
+  </div>
+</nav>

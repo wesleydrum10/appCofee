@@ -1,0 +1,26 @@
+.activity-indicator { position: fixed; z-index: 80; right: 24px; bottom: 24px; width: min(360px, calc(100% - 32px)); display: flex; align-items: center; gap: 12px; padding: 16px; border: 1px solid #e8dec8; border-radius: 8px; background: #fdfbf7; color: #2b1e1a; box-shadow: 0 8px 28px #2b1e1a1a; overflow: hidden; animation: activity-enter 180ms ease-out; pointer-events: auto; }
+.activity-indicator[hidden], .activity-dismiss[hidden] { display: none; }
+.activity-icon { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background: #f4ece1; color: #8b5013; font-size: 22px; }
+.activity-copy { flex: 1; min-width: 0; }
+.activity-copy p { font-size: 14px; line-height: 20px; font-weight: 600; overflow-wrap: anywhere; }
+.activity-copy > span { display: block; margin-top: 3px; color: #7c6c67; font-size: 12px; line-height: 18px; }
+.activity-dismiss { display: grid; place-items: center; width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; color: #7c6c67; }
+.activity-dismiss:hover { background: #f4ece1; }
+.activity-dismiss:focus-visible { outline: 2px solid #8b5013; outline-offset: 2px; }
+.activity-dismiss .material-symbols-outlined { font-size: 18px; }
+.activity-track { position: absolute; bottom: 0; inset-inline: 0; height: 3px; background: #e8dec8; }
+.activity-track > span { display: block; height: 100%; width: 35%; border-radius: 2px; background: #c88242; animation: activity-travel 1.5s ease-in-out infinite alternate; }
+.activity-indicator[data-state="pending"] .activity-icon { animation: activity-breathe 1.5s ease-in-out infinite alternate; }
+.activity-indicator[data-state="success"] .activity-icon { color: #3d7b54; background: #eaf2ed; }
+.activity-indicator[data-state="error"] .activity-icon { color: #b84a39; background: #ffdad6; }
+.activity-indicator[data-state="success"] .activity-track > span, .activity-indicator[data-state="error"] .activity-track > span { width: 100%; animation: none; }
+.activity-indicator[data-state="success"] .activity-track > span { background: #3d7b54; }
+.activity-indicator[data-state="error"] .activity-track > span { background: #b84a39; }
+[data-action-state][aria-busy="true"] { position: relative; overflow: hidden; cursor: wait; }
+[data-action-state][aria-busy="true"] > span:not(.material-symbols-outlined) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+[data-action-state][aria-busy="true"]::after { content: ''; position: absolute; bottom: 0; left: 0; width: 35%; height: 3px; background: #feb06b; animation: activity-travel 1.5s ease-in-out infinite alternate; }
+@keyframes activity-travel { from { transform: translateX(-100%); } to { transform: translateX(285%); } }
+@keyframes activity-breathe { from { opacity: .65; } to { opacity: 1; } }
+@keyframes activity-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 767px) { .activity-indicator { right: 16px; bottom: calc(88px + env(safe-area-inset-bottom)); } }
+@media (prefers-reduced-motion: reduce) { .activity-indicator, .activity-icon, .activity-track > span, [data-action-state][aria-busy="true"]::after { animation: none !important; } }

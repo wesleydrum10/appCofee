@@ -1,0 +1,23 @@
+{% extends "layouts/storefront.html" %}
+{% block content %}
+<section class="space-y-4">
+  <div>
+    <p class="text-xs font-bold uppercase tracking-[0.2em] text-caramel">Acompanhamento</p>
+    <h1 class="brand-heading text-[34px] leading-[42px] text-espresso">Pedidos</h1>
+  </div>
+  <div class="space-y-3">
+    {% for order in orders %}
+      <a href="{% url 'orders:detail' order.number %}" class="brand-card block p-4">
+        <div class="flex justify-between gap-3">
+          <strong class="text-sm text-espresso">{{ order.number }}</strong>
+          {% include "components/status_badge.html" with status=order.get_status_display status_code=order.status only %}
+        </div>
+        <p class="mt-2 text-sm text-dust">R$ {{ order.total }} · {{ order.created_at|date:"d/m/Y H:i" }}</p>
+        {% if order.payment %}<p class="mt-2 text-sm text-dust">Pagamento: {% include "components/status_badge.html" with status=order.payment.get_status_display status_code=order.payment.status only %}</p>{% endif %}
+      </a>
+    {% empty %}
+      {% include "components/empty_state.html" with title="Você ainda não fez nenhum pedido." description="A vitrine está pronta quando bater a vontade." %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

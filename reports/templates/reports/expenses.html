@@ -1,0 +1,7 @@
+{% extends "layouts/dashboard.html" %}
+{% block content %}
+<div class="management-title"><h1>Despesas</h1><a class="management-button" href="{% url 'reports:expense_create' %}"><span class="material-symbols-outlined" aria-hidden="true">add</span>Nova despesa</a></div>
+<div class="management-table"><table><thead><tr><th>Descrição</th><th>Pagamento</th><th>Valor</th><th></th></tr></thead><tbody>
+{% for expense in page %}<tr><td>{{ expense.description }}</td><td>{{ expense.paid_on|date:'d/m/Y' }}</td><td>R$ {{ expense.amount|floatformat:2 }}</td><td><div class="management-actions"><a href="{% url 'reports:expense_edit' expense.pk %}" title="Editar despesa" aria-label="Editar despesa"><span class="material-symbols-outlined" aria-hidden="true">edit</span></a><form method="post" action="{% url 'reports:expense_delete' expense.pk %}" onsubmit="return confirm('Excluir esta despesa?')">{% csrf_token %}<button type="submit" title="Excluir despesa" aria-label="Excluir despesa"><span class="material-symbols-outlined" aria-hidden="true">delete</span></button></form></div></td></tr>{% empty %}<tr><td colspan="4">Nenhuma despesa cadastrada.</td></tr>{% endfor %}
+</tbody></table></div>{% include 'reports/pagination.html' %}
+{% endblock %}
