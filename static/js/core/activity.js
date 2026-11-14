@@ -15,7 +15,7 @@ function render(label, state, icon) {
     ? (active.size > 1 ? `${active.size} ações em andamento` : 'Em andamento')
     : (state === 'success' ? 'Concluído' : 'Tente novamente');
   region.querySelector('[data-activity-dismiss]').hidden = state === 'pending';
-  if (state !== 'pending') hideTimer = setTimeout(() => { region.hidden = true; }, state === 'success' ? 2500 : 6000);
+  if (state !== 'pending') hideTimer = setTimeout(() => { region.hidden = true; }, state === 'success' ? 1200 : 6000);
 }
 
 function renderPending() {

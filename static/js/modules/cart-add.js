@@ -1,5 +1,4 @@
 import { setActionPending, setActionSuccess, setActionError } from '../core/action-state.js';
-import { showToast } from '../core/toast.js';
 
 export function initCartAdd() {
   const forms = [...document.querySelectorAll('[data-cart-add]')];
@@ -43,7 +42,6 @@ export function initCartAdd() {
           if (!response.ok || !result.ok) throw new Error(result.message || 'Não foi possível adicionar este produto.');
           render(result);
           setActionSuccess(button);
-          showToast('Produto adicionado ao carrinho.', 'success');
         } catch (error) {
           feedback.textContent = error.name === 'TimeoutError' || error instanceof TypeError
             ? 'A conexão falhou. Atualize a página para conferir o carrinho antes de tentar novamente.'
