@@ -32,12 +32,15 @@ class DeploymentTests(SimpleTestCase):
             "SECRET_KEY": "synthetic-deployment-test-key-with-more-than-fifty-characters",
             "ALLOWED_HOSTS": "deployment.example",
             "DATABASE_URL": "postgresql://test:test@database.example/test",
+            "RENDER_EXTERNAL_HOSTNAME": "",
+            "CSRF_TRUSTED_ORIGINS": "https://deployment.example",
             **overrides,
         }
         return subprocess.run(
             [sys.executable, "-c", (
                 "import json; from config import settings as s; "
                 "print(json.dumps({'engine': s.DATABASES['default']['ENGINE'], "
+                "'hosts': s.ALLOWED_HOSTS, 'origins': s.CSRF_TRUSTED_ORIGINS, "
                 "'ssl': s.DATABASES['default'].get('OPTIONS', {}).get('sslmode'), "
                 "'secure_cookies': s.SESSION_COOKIE_SECURE and s.CSRF_COOKIE_SECURE, "
                 "'pool_compatible': s.DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS']}))"
@@ -80,3 +83,20 @@ class DeploymentTests(SimpleTestCase):
         result = self.load_settings(DATABASE_URL="postgresql://test:test@database.example/test?sslmode=verify-full")
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(json.loads(result.stdout)["ssl"], "verify-full")
+
+    def test_render_hostname_is_allowed_alongside_custom_domains(self):
+        for hosts in ("", "localhost,127.0.0.1", "deployment.example,appcofee.onrender.com"):
+            with self.subTest(hosts=hosts):
+                result = self.load_settings(
+                    ALLOWED_HOSTS=hosts, RENDER_EXTERNAL_HOSTNAME="appcofee.onrender.com",
+                )
+                self.assertEqual(result.returncode, 0, result.stderr)
+                data = json.loads(result.stdout)
+                self.assertEqual(data["hosts"].count("appcofee.onrender.com"), 1)
+                self.assertIn("https://appcofee.onrender.com", data["origins"])
+                self.assertIn("https://deployment.example", data["origins"])
+
+    def test_without_render_hostname_no_host_is_added(self):
+        result = self.load_settings()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(json.loads(result.stdout)["hosts"], ["deployment.example"])

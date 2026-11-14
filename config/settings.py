@@ -22,9 +22,18 @@ SECRET_KEY = config("SECRET_KEY", default="dev-only-change-me" if DEBUG else "")
 if not SECRET_KEY or (not DEBUG and SECRET_KEY in {"dev-only-change-me", "change-me"}):
     raise ImproperlyConfigured("Defina SECRET_KEY com um segredo próprio para produção.")
 ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv())
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="", cast=Csv())
+# O Render informa o domínio atribuído ao serviço, inclusive em previews.
+# Nunca derive esta permissão do cabeçalho Host enviado pelo cliente.
+render_hostname = config("RENDER_EXTERNAL_HOSTNAME", default="").strip()
+if render_hostname:
+    if render_hostname not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(render_hostname)
+    render_origin = f"https://{render_hostname}"
+    if render_origin not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(render_origin)
 if not DEBUG and (not ALLOWED_HOSTS or "*" in ALLOWED_HOSTS):
     raise ImproperlyConfigured("Defina ALLOWED_HOSTS com os domínios de produção, sem '*'.")
-CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="", cast=Csv())
 
 INSTALLED_APPS = [
     "django.contrib.admin",

@@ -144,6 +144,16 @@ Dockerfile diretamente, sem configuração concorrente em `render.yaml`.
 | `DATABASE_URL` | Connection string do Neon, com SSL; obrigatória |
 | `PORT` | Injetada pelo Render; não precisa definir |
 
+O Render fornece `RENDER_EXTERNAL_HOSTNAME` automaticamente. O projeto adiciona
+esse domínio a `ALLOWED_HOSTS` e sua origem HTTPS a `CSRF_TRUSTED_ORIGINS`,
+preservando os valores explícitos para domínios customizados. Não defina `*`.
+Se aparecer `DisallowedHost` em um deploy antigo, ajuste no painel
+`ALLOWED_HOSTS=appcofee.onrender.com` e
+`CSRF_TRUSTED_ORIGINS=https://appcofee.onrender.com` (substitua pelo domínio real
+do serviço) e selecione **Save and deploy**. Sem novo deploy, as variáveis
+alteradas não são aplicadas ao container em execução.
+Veja [as variáveis automáticas do Render](https://render.com/docs/environment-variables).
+
 Para gerar a chave na sua máquina: `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"`.
 Cole o resultado somente no painel. Não use a chave de exemplo local em produção.
 
