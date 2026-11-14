@@ -172,3 +172,12 @@
   }
 }
 .product-card[data-in-cart=true]{border-color:#3d7b54;box-shadow:0 0 0 1px #3d7b54}.cart-product-state[hidden],.product-cart-feedback[hidden]{display:none}.cart-product-state{background:#eaf2ed;color:#326847;border-radius:8px;padding:8px;font-size:12px;line-height:1.5;margin:0 0 10px}.product-cart-feedback{font-size:12px;line-height:1.5;color:#b84a39;margin-top:8px;overflow-wrap:anywhere}
+
+/* Evita o zoom automático ao focar campos no iOS; mantém o zoom manual. */
+@media (max-width: 767px), (pointer: coarse) {
+  html body input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="color"]),
+  html body select,
+  html body textarea {
+    font-size: max(16px, 1rem) !important;
+  }
+}

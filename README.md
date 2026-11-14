@@ -223,6 +223,13 @@ Os nomes do campo `Product.image` continuam compatíveis com o catálogo local.
 )
 ```
 
+No prompt, cole somente a connection string real, começando com
+`postgresql://` ou `postgres://`. Por exemplo, se o Neon mostrar
+`psql 'postgresql://USUARIO:SENHA@HOST/BANCO?sslmode=require'`, cole apenas o
+conteúdo entre as aspas: sem `psql`, sem aspas e sem `DATABASE_URL=`.
+Os termos USUARIO, SENHA, HOST e BANCO são ilustrativos; use a URL real do console.
+A entrada fica oculta enquanto você cola, o que é esperado.
+
 Preserve os parâmetros SSL da connection string. Esse `DEBUG=True` vale apenas
 para o comando local, que não inicia servidor; mantenha `DEBUG=False` no Render.
 A variável de conexão não fica no histórico do shell ou no `.env` local.
@@ -317,6 +324,13 @@ com a quantidade total, somando inclusive personalizações. O contador da sacol
 sem redirecionar. Para finalizar, abra o carrinho pelo menu ou pelo ícone da sacola.
 Ao recarregar ou voltar do carrinho, as quantidades são consultadas novamente.
 
+Os itens adicionados como visitante são mantidos após login ou cadastro, incluindo
+quantidades e adicionais. Se a conta já tiver uma sacola salva, os itens são
+reunidos sem excluir as escolhas anteriores. Quando a soma ultrapassa 50 unidades,
+a sacola é preservada e a finalização solicita ajustar as quantidades.
+Em telas móveis e dispositivos de toque, os campos de formulário usam fonte de
+pelo menos 16 px para evitar zoom automático ao focar; o zoom manual continua disponível.
+
 O indicador de ações é compartilhado pelas páginas. Formulários POST recebem
 feedback durante o envio; personalize o botão com `data-pending-label` e
 `data-action-icon` (nome de um Material Symbol).
@@ -369,7 +383,7 @@ Após o seed manual em desenvolvimento ou em uma demonstração acadêmica:
 
 - Cliente: `cliente@demo.com` / `123456`
 - Staff: `staff@demo.com` / `123456`
-- Gerente: `gerente@demo.com` / `123456`
+- Gerente: `gerente@demo.com` / `123456`fgere
 
 ### Criar as contas na demonstração hospedada (Render + Neon)
 

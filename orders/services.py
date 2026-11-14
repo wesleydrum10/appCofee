@@ -54,6 +54,8 @@ class OrderService:
         cart_items = list(cart.items.select_related("product").prefetch_related("addons__addon"))
         if not cart_items:
             raise ValueError("Seu carrinho está vazio.")
+        if sum(item.quantity for item in cart_items) > CartService.MAX_ITEMS:
+            raise ValueError("O pedido pode ter no máximo 50 itens. Ajuste as quantidades na sacola.")
         quantities = {}
         for item in cart_items:
             quantities[item.product_id] = quantities.get(item.product_id, 0) + item.quantity

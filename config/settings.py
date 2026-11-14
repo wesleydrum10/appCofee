@@ -88,7 +88,18 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 database_url = config("DATABASE_URL", default="").strip()
 if database_url:
-    database = dj_database_url.parse(database_url, conn_max_age=60, conn_health_checks=True)
+    if not database_url.lower().startswith(("postgres://", "postgresql://")):
+        raise ImproperlyConfigured(
+            "Este projeto requer PostgreSQL. DATABASE_URL deve começar com postgresql:// ou postgres://. "
+            "Cole apenas a URL, sem psql, aspas ou o prefixo DATABASE_URL=."
+        )
+    try:
+        database = dj_database_url.parse(database_url, conn_max_age=60, conn_health_checks=True)
+    except ValueError:
+        raise ImproperlyConfigured(
+            "DATABASE_URL PostgreSQL inválida. Confira a connection string do Neon e a porta. "
+            "Cole apenas a URL, sem psql, aspas ou o prefixo DATABASE_URL=."
+        ) from None
 elif DEBUG:
     database = {
         "ENGINE": "django.db.backends.postgresql",

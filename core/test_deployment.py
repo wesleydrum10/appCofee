@@ -62,6 +62,20 @@ class DeploymentTests(SimpleTestCase):
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn("requer PostgreSQL", result.stderr)
 
+    def test_invalid_database_urls_have_clear_errors_without_exposing_credentials(self):
+        for url in (
+            "psql 'postgresql://user:synthetic-secret@database.example/test'",
+            "'postgresql://user:synthetic-secret@database.example/test'",
+            "DATABASE_URL=postgresql://user:synthetic-secret@database.example/test",
+            "database.example/test-synthetic-secret",
+            "postgresql://user:synthetic-secret@database.example:wrong-port/test",
+        ):
+            with self.subTest(url=url):
+                result = self.load_settings(DATABASE_URL=url)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("Cole apenas a URL", result.stderr)
+                self.assertNotIn("synthetic-secret", result.stderr)
+
     def test_production_requires_ssl_and_explicit_hosts(self):
         for override in (
             {"DATABASE_URL": "postgresql://test:test@database.example/test?sslmode=disable"},

@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.contrib.auth import get_user_model
 from django.db import transaction
 from django.db.models import Sum
 
@@ -15,6 +16,7 @@ class CartLimitExceeded(Exception):
 
 class CartService:
     MAX_ITEMS = 50
+    GUEST_CART_SESSION_KEY = "guest_cart_id"
 
     @staticmethod
     def get_or_create_cart(request) -> Cart:
@@ -24,7 +26,31 @@ class CartService:
         if not request.session.session_key:
             request.session.create()
         cart, _ = Cart.objects.get_or_create(session_key=request.session.session_key)
+        # login() troca a chave da sessão, mas preserva seus dados.
+        if request.session.get(CartService.GUEST_CART_SESSION_KEY) != cart.pk:
+            request.session[CartService.GUEST_CART_SESSION_KEY] = cart.pk
         return cart
+
+    @staticmethod
+    @transaction.atomic
+    def merge_guest_cart(user, guest_cart_id):
+        # Serializa logins simultâneos da mesma conta, inclusive sem carrinho salvo.
+        get_user_model().objects.select_for_update().get(pk=user.pk)
+        guest = Cart.objects.select_for_update().filter(pk=guest_cart_id, user__isnull=True).first()
+        if guest is None:
+            return
+        cart = Cart.objects.select_for_update().filter(user=user).first()
+        if cart is None:
+            guest.user = user
+            guest.session_key = ""
+            guest.save(update_fields=["user", "session_key", "updated_at"])
+            return
+        # Move as linhas completas: preços, adicionais e personalizações permanecem.
+        guest.items.update(cart=cart)
+        if cart.coupon_id is None:
+            cart.coupon_id = guest.coupon_id
+            cart.save(update_fields=["coupon", "updated_at"])
+        guest.delete()
 
     @staticmethod
     def item_count(cart: Cart) -> int:
@@ -69,7 +95,7 @@ class CartService:
         product = Product.objects.get(pk=item.product_id)
         existing = item.cart.items.filter(product=product).exclude(pk=item.pk).aggregate(total=Sum("quantity"))["total"] or 0
         CartService.validate_stock(product, existing + quantity)
-        if CartService.item_count(item.cart) - item.quantity + quantity > CartService.MAX_ITEMS:
+        if quantity > item.quantity and CartService.item_count(item.cart) - item.quantity + quantity > CartService.MAX_ITEMS:
             raise CartLimitExceeded("O pedido pode ter no máximo 50 itens.")
         item.quantity = quantity
         item.save(update_fields=["quantity", "updated_at"])
