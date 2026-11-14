@@ -104,6 +104,12 @@ class Product(models.Model):
         return reverse("catalog:product_detail", kwargs={"slug": self.slug})
 
     @property
+    def image_url(self):
+        from .images import product_image_url
+
+        return product_image_url(self.image.name)
+
+    @property
     def is_new(self):
         return self.created_at >= timezone.now() - timedelta(days=7)
 

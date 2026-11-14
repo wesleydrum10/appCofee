@@ -3,7 +3,6 @@ from datetime import timedelta
 from functools import wraps
 
 from django.contrib import messages
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
@@ -15,6 +14,7 @@ from django.views.decorators.http import require_POST
 from django.utils import timezone
 
 from accounts.models import User
+from catalog.images import product_image_url
 from catalog.models import Category, Product
 from inventory.models import InventoryItem
 from orders.models import Order
@@ -82,6 +82,9 @@ def dashboard(request):
         for label, key in [("Pedidos realizados", "placed_quantity"), ("Valor dos pedidos", "placed_total"), ("Pedidos aguardando pagamento", "pending_quantity"), ("A receber", "pending_total"), ("Recebimentos", "net"), ("Despesas", "expenses"), ("Saldo", "balance"), ("Pedidos pagos", "quantity"), ("Ticket médio", "average_ticket"), ("Descontos", "discounts")]:
             writer.writerow([label, summary[key]])
         return response
+    if summary is not None:
+        for product in summary["top_products"]:
+            product["image_url"] = product_image_url(product["product__image"])
     low_stock = list(InventoryItem.objects.filter(quantity_on_hand__lte=F("minimum_quantity")).select_related("ingredient")[:10])
     for item in low_stock:
         item.stock_percent = float(min(item.quantity_on_hand / item.minimum_quantity * 100, 100)) if item.minimum_quantity else 0
@@ -90,7 +93,7 @@ def dashboard(request):
         product.stock_percent = float(min(product.stock_quantity / product.minimum_stock * 100, 100)) if product.minimum_stock else 0
     return render(request, "reports/dashboard.html", {
         "summary": summary, "form": form, "section": "finance",
-        "low_stock": low_stock, "period": period, "media_url": settings.MEDIA_URL,
+        "low_stock": low_stock, "period": period,
         "low_products": low_products, "stock_alert_count": len(low_stock) + len(low_products),
         "cashflow": FinancialReportService.cashflow(form.cleaned_data.get("start"), form.cleaned_data.get("end")) if summary is not None else [],
     })

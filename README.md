@@ -191,7 +191,64 @@ Esses comandos usam diretamente o Neon, sem depender do container do Render.
 Não use `docker compose exec` nesse caso: ele aponta para o PostgreSQL local.
 Não execute os comandos contra produção ao mesmo tempo que um deploy.
 `seed_demo` permanece manual e cria/resetta contas com senhas públicas de
-desenvolvimento; não o execute em um ambiente real.
+desenvolvimento; não o execute em um ambiente real com dados de clientes.
+Para uma demonstração acadêmica hospedada, consulte **Usuários demo** abaixo.
+
+### Publicar todos os produtos e imagens do catálogo
+
+O projeto inclui os **12 produtos do catálogo local** em
+`catalog/data/catalog.json`, com categorias, preços, descrições, ingredientes,
+alérgenos e adicionais. As 12 imagens originais estão versionadas em
+`static/catalog/products/` e entram no `collectstatic` do build. São servidas
+pelo WhiteNoise em `/static/catalog/products/`, inclusive no Render Free,
+sem depender de arquivos enviados ao disco efêmero ou de um serviço de uploads.
+Os nomes do campo `Product.image` continuam compatíveis com o catálogo local.
+
+1. Envie as alterações e a pasta `static/catalog/` ao GitHub e faça novo deploy
+   no Render. Não basta executar o comando de catálogo usando uma imagem Docker
+   antiga: ela não contém os arquivos estáticos novos.
+2. Depois que o deploy aplicar as migrations, execute **uma vez, manualmente**,
+   na raiz do projeto local com as dependências instaladas:
+
+```bash
+(
+  read -rsp "DATABASE_URL do mesmo banco/branch Neon usado pelo Render: " DATABASE_URL
+  printf '\n'
+  if [ -z "$DATABASE_URL" ]; then
+    echo "DATABASE_URL vazia; operação cancelada."
+    exit 1
+  fi
+  export DATABASE_URL
+  DEBUG=True .venv/bin/python manage.py load_catalog
+)
+```
+
+Preserve os parâmetros SSL da connection string. Esse `DEBUG=True` vale apenas
+para o comando local, que não inicia servidor; mantenha `DEBUG=False` no Render.
+A variável de conexão não fica no histórico do shell ou no `.env` local.
+Sem acesso ao Neon configurado nesta máquina, essa etapa precisa ser executada
+por quem possui a connection string do ambiente.
+
+`load_catalog` pode ser repetido: cria os produtos ausentes por slug, preenche
+imagens vazias dos produtos existentes e preserva seus preços, estoques,
+status, relações e uploads personalizados. Não exclui outros produtos, não
+cria/resetta usuários, não copia pedidos e não roda automaticamente no deploy.
+Os produtos novos recebem seus ingredientes, alérgenos e adicionais do catálogo
+versionado. Produtos já desativados ou esgotados continuam nesse estado.
+O comando `seed_demo` continua separado: ele cria apenas quatro produtos básicos
+e contas demonstrativas; não é necessário executá-lo para importar o catálogo
+completo, nem ele substitui `load_catalog`.
+
+Para desenvolvimento Docker, use:
+
+```bash
+docker compose exec web python manage.py load_catalog
+```
+
+No site publicado, confira `/produtos/`, os detalhes, checkout e as miniaturas
+no painel. O cardápio mostra os produtos ativos e disponíveis conforme as regras
+existentes. A importação mantém os uploads reais preparados para storage externo;
+novas imagens enviadas pelo painel ainda precisam desse serviço em produção.
 
 ### Estáticos, uploads e limites
 
@@ -204,8 +261,9 @@ externos, como no frontend existente.
 O filesystem do Render é efêmero, inclusive no Free: não serve para persistir
 imagens de produtos ou outros uploads. Por padrão, novos uploads em produção
 falham explicitamente com erro de configuração, antes de gravar, para evitar
-perda silenciosa. O catálogo pode ser usado sem imagens; os placeholders
-existentes continuam funcionando. Uploads locais continuam no volume `media_data`.
+perda silenciosa. As imagens fixas dos 12 produtos acompanham a imagem Docker; consulte a seção
+anterior para carregar o catálogo no Neon. Produtos sem imagem usam os placeholders
+existentes. Uploads locais continuam no volume `media_data`.
 Imagens demonstrativas fixas novas podem ser versionadas em `static/`.
 
 Para habilitar uploads reais, escolha um serviço externo e instale o backend
@@ -292,20 +350,57 @@ docker compose exec web python manage.py test --noinput
 A configuração de deploy inclui regressões para variáveis obrigatórias,
 PostgreSQL sem fallback, SSL, cookies seguros, bloqueio de uploads efêmeros e
 health check sem consultas ao banco. A validação da infraestrutura em
-14/11/2026 passou com 116 testes Django, dois arquivos de testes JavaScript,
+14/11/2026 passou com 123 testes Django, dois arquivos de testes JavaScript,
 build Docker e smoke test de produção com PostgreSQL SSL, Gunicorn em porta
 customizada, login com CSRF e estáticos comprimidos. O layout do login foi
 verificado em 390 e 1440 px. Os testes usaram banco e containers isolados;
 não representam uma publicação real nas contas Render/Neon.
+A carga do catálogo foi verificada em banco isolado, inclusive repetição sem
+sobrescrever alterações. Os 12 detalhes e as 12 imagens retornaram HTTP 200 no
+container com `DEBUG=False`, sem arquivos locais em `media/products/`.
 
 
 ## Usuários demo
 
-Somente em desenvolvimento, após executar manualmente `seed_demo`:
+As contas abaixo só existem no banco em que `seed_demo` foi executado.
+O deploy aplica migrations, mas não cria esses usuários automaticamente.
+Executar o seed no PostgreSQL local não cria contas no Neon.
+Após o seed manual em desenvolvimento ou em uma demonstração acadêmica:
 
 - Cliente: `cliente@demo.com` / `123456`
 - Staff: `staff@demo.com` / `123456`
 - Gerente: `gerente@demo.com` / `123456`
+
+### Criar as contas na demonstração hospedada (Render + Neon)
+
+Na máquina local, com as dependências instaladas e na raiz do projeto, execute
+em Bash o bloco abaixo. Cole a connection string do **mesmo banco e branch Neon
+usados pelo Render**, preservando os parâmetros SSL. A entrada fica oculta e a
+URL só vale para o subshell; o arquivo `.env` local não é alterado.
+
+```bash
+(
+  read -rsp "DATABASE_URL do Neon da demonstração: " DATABASE_URL
+  printf '\n'
+  if [ -z "$DATABASE_URL" ]; then
+    echo "DATABASE_URL vazia; operação cancelada."
+    exit 1
+  fi
+  export DATABASE_URL
+  DEBUG=True .venv/bin/python manage.py seed_demo
+)
+```
+
+Esse `DEBUG=True` vale apenas para o comando administrativo local, que não
+inicia servidor. Mantenha `DEBUG=False` no Render. Após a mensagem
+**Dados demonstrativos criados.**, entre no site publicado usando o e-mail
+e a senha acima; não é necessário fazer novo deploy.
+
+O comando também cria dados de catálogo e redefine as senhas das três contas
+para `123456` em cada execução. Use-o somente na demonstração, sem dados reais.
+Para uso real, crie um superusuário com senha própria conforme a seção de deploy
+e cadastre os funcionários pelo painel. Não use `docker compose exec web` para
+popular o Neon: o Compose aponta deliberadamente para o banco local.
 
 ## Gestão do empreendimento
 

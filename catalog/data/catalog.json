@@ -1,0 +1,631 @@
+{
+  "categories": [
+    {
+      "name": "Cafés",
+      "slug": "cafes",
+      "description": "Bebidas especiais",
+      "is_active": true
+    },
+    {
+      "name": "Confeitaria",
+      "slug": "confeitaria",
+      "description": "",
+      "is_active": true
+    },
+    {
+      "name": "Cupcakes",
+      "slug": "cupcakes",
+      "description": "Cupcakes artesanais",
+      "is_active": true
+    }
+  ],
+  "ingredients": [
+    {
+      "name": "Açúcar",
+      "is_essential": false
+    },
+    {
+      "name": "Baunilha",
+      "is_essential": false
+    },
+    {
+      "name": "Café especial",
+      "is_essential": true
+    },
+    {
+      "name": "Cenoura",
+      "is_essential": false
+    },
+    {
+      "name": "Chantilly",
+      "is_essential": false
+    },
+    {
+      "name": "Chocolate",
+      "is_essential": false
+    },
+    {
+      "name": "Farinha de trigo",
+      "is_essential": true
+    },
+    {
+      "name": "Leite",
+      "is_essential": true
+    },
+    {
+      "name": "Leite condensado",
+      "is_essential": false
+    },
+    {
+      "name": "Limão",
+      "is_essential": false
+    },
+    {
+      "name": "Manteiga",
+      "is_essential": false
+    },
+    {
+      "name": "Morango",
+      "is_essential": false
+    },
+    {
+      "name": "Nozes",
+      "is_essential": false
+    },
+    {
+      "name": "Ovos",
+      "is_essential": false
+    },
+    {
+      "name": "Óleo vegetal",
+      "is_essential": false
+    }
+  ],
+  "allergens": [
+    {
+      "name": "Glúten",
+      "slug": "gluten",
+      "is_highlighted": true
+    },
+    {
+      "name": "Lactose",
+      "slug": "lactose",
+      "is_highlighted": true
+    },
+    {
+      "name": "Nozes",
+      "slug": "nozes",
+      "is_highlighted": true
+    },
+    {
+      "name": "Ovos",
+      "slug": "ovos",
+      "is_highlighted": true
+    },
+    {
+      "name": "Soja",
+      "slug": "soja",
+      "is_highlighted": true
+    }
+  ],
+  "addons": [
+    {
+      "name": "Confeitos",
+      "kind": "EXTRA",
+      "price": "1.50",
+      "is_active": true
+    },
+    {
+      "name": "Doce de leite",
+      "kind": "FILLING",
+      "price": "3.50",
+      "is_active": true
+    },
+    {
+      "name": "Ganache",
+      "kind": "TOPPING",
+      "price": "3.00",
+      "is_active": true
+    }
+  ],
+  "products": [
+    {
+      "name": "Cappuccino Cremoso",
+      "slug": "cappuccino-cremoso",
+      "description": "Café espresso com leite vaporizado e espuma cremosa.",
+      "image": "products/cappuccino-cremoso.png",
+      "price": "12.90",
+      "nutritional_info": "",
+      "is_active": true,
+      "is_available": true,
+      "stock_quantity": null,
+      "minimum_stock": 0,
+      "category": "cafes",
+      "ingredients": [
+        {
+          "ingredient__name": "Café especial",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Leite",
+          "quantity": ""
+        }
+      ],
+      "allergens": [
+        "lactose"
+      ],
+      "addons": []
+    },
+    {
+      "name": "Cold Brew da Casa",
+      "slug": "cold-brew-da-casa",
+      "description": "Café extraído a frio, leve e refrescante.",
+      "image": "products/cold-brew-da-casa.png",
+      "price": "14.90",
+      "nutritional_info": "",
+      "is_active": true,
+      "is_available": true,
+      "stock_quantity": null,
+      "minimum_stock": 0,
+      "category": "cafes",
+      "ingredients": [
+        {
+          "ingredient__name": "Café especial",
+          "quantity": ""
+        }
+      ],
+      "allergens": [],
+      "addons": []
+    },
+    {
+      "name": "Espresso Duplo",
+      "slug": "espresso-duplo",
+      "description": "Duas doses de café especial, com aroma intenso e crema aveludada.",
+      "image": "products/espresso-duplo.png",
+      "price": "8.90",
+      "nutritional_info": "",
+      "is_active": true,
+      "is_available": true,
+      "stock_quantity": null,
+      "minimum_stock": 0,
+      "category": "cafes",
+      "ingredients": [
+        {
+          "ingredient__name": "Café especial",
+          "quantity": ""
+        }
+      ],
+      "allergens": [],
+      "addons": []
+    },
+    {
+      "name": "Latte de Baunilha",
+      "slug": "latte-de-baunilha",
+      "description": "Café espresso com leite vaporizado e um toque de baunilha.",
+      "image": "products/latte-de-baunilha.png",
+      "price": "15.90",
+      "nutritional_info": "",
+      "is_active": true,
+      "is_available": true,
+      "stock_quantity": null,
+      "minimum_stock": 0,
+      "category": "cafes",
+      "ingredients": [
+        {
+          "ingredient__name": "Café especial",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Leite",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Baunilha",
+          "quantity": ""
+        }
+      ],
+      "allergens": [
+        "lactose"
+      ],
+      "addons": []
+    },
+    {
+      "name": "Mocha de Chocolate",
+      "slug": "mocha-de-chocolate",
+      "description": "Espresso com chocolate, leite vaporizado e cobertura de chantilly.",
+      "image": "products/mocha-de-chocolate.png",
+      "price": "16.90",
+      "nutritional_info": "",
+      "is_active": true,
+      "is_available": true,
+      "stock_quantity": null,
+      "minimum_stock": 0,
+      "category": "cafes",
+      "ingredients": [
+        {
+          "ingredient__name": "Café especial",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Leite",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Chocolate",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Chantilly",
+          "quantity": ""
+        }
+      ],
+      "allergens": [
+        "lactose",
+        "soja"
+      ],
+      "addons": []
+    },
+    {
+      "name": "Brownie com Nozes",
+      "slug": "brownie-com-nozes",
+      "description": "Brownie de chocolate com centro macio e pedaços de nozes.",
+      "image": "products/brownie-com-nozes.png",
+      "price": "13.90",
+      "nutritional_info": "",
+      "is_active": true,
+      "is_available": true,
+      "stock_quantity": null,
+      "minimum_stock": 0,
+      "category": "confeitaria",
+      "ingredients": [
+        {
+          "ingredient__name": "Farinha de trigo",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Chocolate",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Ovos",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Açúcar",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Manteiga",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Nozes",
+          "quantity": ""
+        }
+      ],
+      "allergens": [
+        "gluten",
+        "lactose",
+        "nozes",
+        "ovos",
+        "soja"
+      ],
+      "addons": []
+    },
+    {
+      "name": "Cookie de Chocolate",
+      "slug": "cookie-de-chocolate",
+      "description": "Cookie artesanal com bordas crocantes e gotas de chocolate.",
+      "image": "products/cookie-de-chocolate.png",
+      "price": "9.90",
+      "nutritional_info": "",
+      "is_active": true,
+      "is_available": true,
+      "stock_quantity": null,
+      "minimum_stock": 0,
+      "category": "confeitaria",
+      "ingredients": [
+        {
+          "ingredient__name": "Farinha de trigo",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Baunilha",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Chocolate",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Ovos",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Açúcar",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Manteiga",
+          "quantity": ""
+        }
+      ],
+      "allergens": [
+        "gluten",
+        "lactose",
+        "ovos",
+        "soja"
+      ],
+      "addons": []
+    },
+    {
+      "name": "Cupcake Chocolate Intenso",
+      "slug": "cupcake-chocolate-intenso",
+      "description": "Massa de cacau com recheio cremoso.",
+      "image": "products/cupcake-chocolate-intenso.png",
+      "price": "12.50",
+      "nutritional_info": "",
+      "is_active": true,
+      "is_available": true,
+      "stock_quantity": null,
+      "minimum_stock": 0,
+      "category": "cupcakes",
+      "ingredients": [
+        {
+          "ingredient__name": "Farinha de trigo",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Leite",
+          "quantity": ""
+        }
+      ],
+      "allergens": [
+        "gluten",
+        "lactose"
+      ],
+      "addons": [
+        {
+          "name": "Confeitos",
+          "kind": "EXTRA"
+        },
+        {
+          "name": "Doce de leite",
+          "kind": "FILLING"
+        },
+        {
+          "name": "Ganache",
+          "kind": "TOPPING"
+        }
+      ]
+    },
+    {
+      "name": "Cupcake Red Velvet",
+      "slug": "cupcake-red-velvet",
+      "description": "Massa aveludada com cobertura de cream cheese.",
+      "image": "products/cupcake-red-velvet.png",
+      "price": "13.50",
+      "nutritional_info": "",
+      "is_active": true,
+      "is_available": true,
+      "stock_quantity": null,
+      "minimum_stock": 0,
+      "category": "cupcakes",
+      "ingredients": [
+        {
+          "ingredient__name": "Farinha de trigo",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Leite",
+          "quantity": ""
+        }
+      ],
+      "allergens": [
+        "gluten",
+        "lactose"
+      ],
+      "addons": [
+        {
+          "name": "Confeitos",
+          "kind": "EXTRA"
+        },
+        {
+          "name": "Doce de leite",
+          "kind": "FILLING"
+        },
+        {
+          "name": "Ganache",
+          "kind": "TOPPING"
+        }
+      ]
+    },
+    {
+      "name": "Cupcake de Cenoura",
+      "slug": "cupcake-de-cenoura",
+      "description": "Massa macia de cenoura com cobertura de brigadeiro de chocolate.",
+      "image": "products/cupcake-de-cenoura.png",
+      "price": "11.90",
+      "nutritional_info": "",
+      "is_active": true,
+      "is_available": true,
+      "stock_quantity": null,
+      "minimum_stock": 0,
+      "category": "cupcakes",
+      "ingredients": [
+        {
+          "ingredient__name": "Farinha de trigo",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Chocolate",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Cenoura",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Ovos",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Óleo vegetal",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Açúcar",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Leite condensado",
+          "quantity": ""
+        }
+      ],
+      "allergens": [
+        "gluten",
+        "lactose",
+        "ovos",
+        "soja"
+      ],
+      "addons": [
+        {
+          "name": "Confeitos",
+          "kind": "EXTRA"
+        },
+        {
+          "name": "Doce de leite",
+          "kind": "FILLING"
+        },
+        {
+          "name": "Ganache",
+          "kind": "TOPPING"
+        }
+      ]
+    },
+    {
+      "name": "Cupcake de Limão",
+      "slug": "cupcake-de-limao",
+      "description": "Massa de limão com recheio cremoso e cobertura de merengue.",
+      "image": "products/cupcake-de-limao.png",
+      "price": "12.90",
+      "nutritional_info": "",
+      "is_active": true,
+      "is_available": true,
+      "stock_quantity": null,
+      "minimum_stock": 0,
+      "category": "cupcakes",
+      "ingredients": [
+        {
+          "ingredient__name": "Farinha de trigo",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Ovos",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Açúcar",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Leite condensado",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Limão",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Manteiga",
+          "quantity": ""
+        }
+      ],
+      "allergens": [
+        "gluten",
+        "lactose",
+        "ovos"
+      ],
+      "addons": [
+        {
+          "name": "Confeitos",
+          "kind": "EXTRA"
+        },
+        {
+          "name": "Doce de leite",
+          "kind": "FILLING"
+        },
+        {
+          "name": "Ganache",
+          "kind": "TOPPING"
+        }
+      ]
+    },
+    {
+      "name": "Cupcake de Morango",
+      "slug": "cupcake-de-morango",
+      "description": "Massa de baunilha com geleia de morango e cobertura de chantilly.",
+      "image": "products/cupcake-de-morango.png",
+      "price": "14.50",
+      "nutritional_info": "",
+      "is_active": true,
+      "is_available": true,
+      "stock_quantity": null,
+      "minimum_stock": 0,
+      "category": "cupcakes",
+      "ingredients": [
+        {
+          "ingredient__name": "Farinha de trigo",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Leite",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Baunilha",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Chantilly",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Ovos",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Açúcar",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Manteiga",
+          "quantity": ""
+        },
+        {
+          "ingredient__name": "Morango",
+          "quantity": ""
+        }
+      ],
+      "allergens": [
+        "gluten",
+        "lactose",
+        "ovos"
+      ],
+      "addons": [
+        {
+          "name": "Confeitos",
+          "kind": "EXTRA"
+        },
+        {
+          "name": "Doce de leite",
+          "kind": "FILLING"
+        },
+        {
+          "name": "Ganache",
+          "kind": "TOPPING"
+        }
+      ]
+    }
+  ]
+}
