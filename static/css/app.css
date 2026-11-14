@@ -39,7 +39,7 @@
   }
 }
 
-/* Button styles must outrank the unlayered reset from the Tailwind CDN. */
+/* Button styles must outrank the unlayered reset from Tailwind. */
 .brand-button {
   align-items: center;
   background: #2b1e1a;

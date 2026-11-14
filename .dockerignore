@@ -19,3 +19,14 @@ htmlcov
 .pytest_cache
 node_modules
 qa
+.github
+**/node_modules
+coverage
+dist
+build
+output
+*.tmp
+*.swp
+static/css/tailwind.css
+.vscode
+.idea

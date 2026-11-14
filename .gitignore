@@ -1,4 +1,6 @@
 .env
+.env.*
+!.env.example
 .venv/
 __pycache__/
 *.py[cod]
@@ -8,3 +10,6 @@ staticfiles/
 .coverage
 .pytest_cache/
 /qa/
+node_modules/
+static/css/tailwind.css
+*.log
